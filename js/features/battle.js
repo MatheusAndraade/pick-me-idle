@@ -31,16 +31,21 @@ export function startTowerLevel(floor) {
 export function setupBattle() {
     if (battleInterval) { clearInterval(battleInterval); setBattleInterval(null); }
 
-    const region = getRegionData(battleState.floor);
+const region = getRegionData(battleState.floor);
     const isBoss = battleState.floor % 10 === 0;
     
-    let teamAvgStars = 1; let allH = getAllHeroes();
-    if (allH.length > 0) teamAvgStars = Math.round(allH.reduce((sum, h) => sum + h.stars, 0) / allH.length);
-    let floorExpectedStars = Math.min(7, Math.ceil(battleState.floor / 10));
-    let mStarsBase = Math.min(7, Math.max(1, Math.ceil((floorExpectedStars + teamAvgStars) / 2)));
-    let mRarityColor = RARITIES.find(r => r.stars === mStarsBase).color;
+    // Média de estrelas do seu time
+    let teamAvgStars = 1; 
+    let allH = getAllHeroes();
+    if (allH.length > 0) {
+        teamAvgStars = Math.max(1, Math.round(allH.reduce((sum, h) => sum + (h.stars || 1), 0) / allH.length));
+    }
     
-    document.getElementById('battle-floor-title').innerHTML = `Andar ${battleState.floor} (${region.name}) ${isBoss ? '(CHEFE 🐉)' : ''} | Ameaça: <span style="color:${mRarityColor}">${'⭐'.repeat(mStarsBase)}</span>`;
+    // TETO RESTRITO POR ANDAR: Garante que no Andar 1 os monstros fiquem travados em um limite seguro (ex: máximo de 3 estrelas)
+    let floorTier = Math.floor((battleState.floor - 1) / 10);
+    let maxAllowedStars = Math.min(7, Math.max(1, teamAvgStars + floorTier));
+
+    document.getElementById('battle-floor-title').innerHTML = `Andar ${battleState.floor} (${region.name}) ${isBoss ? '(CHEFE 🐉)' : ''} | Média Time: ⭐${teamAvgStars}`;
     
     const hCount = game.heroes.length;
     battleState.heroes = game.heroes.map((h, i) => {
@@ -56,10 +61,20 @@ export function setupBattle() {
     const numMonsters = hCount === 0 ? 1 : getRandomInt(hCount + 2, hCount + 7);
     
     for(let i=0; i<numMonsters; i++) {
-        let mMult = 1 + (battleState.floor * 0.35); 
         let isThisBoss = isBoss && i === 0; 
-        let mStars = isThisBoss ? Math.min(7, mStarsBase + 1) : mStarsBase;
-        if (isThisBoss) mMult *= 4.5; 
+
+        // Variação estrita: No andar 1 (e iniciais), a variação é contida entre -1 e +0/+1 no máximo.
+        let starVariance = battleState.floor <= 10 ? getRandomInt(-1, 1) : getRandomInt(-1, 2);
+        
+        let mStars = isThisBoss 
+            ? Math.min(7, maxAllowedStars + 1) 
+            : Math.min(maxAllowedStars, Math.max(1, teamAvgStars + starVariance));
+
+        let mRarityColor = RARITIES.find(r => r.stars === mStars)?.color || '#94a3b8';
+
+        // Multiplicador equilibrado
+        let mMult = 1 + ((battleState.floor - 1) * 0.12) + (mStars * 0.08); 
+        if (isThisBoss) mMult *= 3.0; 
         
         let mName = isThisBoss ? region.boss : region.monsters[getRandomInt(0, region.monsters.length - 1)];
         let mIcon = MONSTER_ICONS[mName] || '👾';
@@ -68,22 +83,22 @@ export function setupBattle() {
         let mAI = isThisBoss ? 'Chefe' : mAIList[getRandomInt(0, mAIList.length - 1)];
 
         let spdMod = 1.0; let hpMod = 1.0; let atkMod = 1.0; let evaMod = 5;
-        if (mAI === 'Assassino') { spdMod = 1.6; atkMod = 1.3; evaMod = 20; }
-        else if (mAI === 'Arqueiro') { spdMod = 1.3; atkMod = 1.1; evaMod = 12; }
-        else if (mAI === 'Guardião') { spdMod = 0.75; hpMod = 1.5; atkMod = 0.8; evaMod = 2; }
-        else if (mAI === 'Curandeiro') { spdMod = 1.0; hpMod = 1.1; atkMod = 0.7; }
-        else if (mAI === 'Chefe') { spdMod = 1.2; hpMod = 4.5; atkMod = 1.5; evaMod = 10; }
+        if (mAI === 'Assassino') { spdMod = 1.5; atkMod = 1.2; evaMod = 15; }
+        else if (mAI === 'Arqueiro') { spdMod = 1.2; atkMod = 1.1; evaMod = 10; }
+        else if (mAI === 'Guardião') { spdMod = 0.8; hpMod = 1.4; atkMod = 0.85; evaMod = 2; }
+        else if (mAI === 'Curandeiro') { spdMod = 1.0; hpMod = 1.1; atkMod = 0.75; }
+        else if (mAI === 'Chefe') { spdMod = 1.1; hpMod = 3.5; atkMod = 1.3; evaMod = 8; }
 
-        let individualSpdVariance = getRandomInt(-3, 4);
-        let finalHp = Math.floor((isThisBoss ? 180 : 38) * mMult * hpMod);
-        let finalAtk = Math.floor((isThisBoss ? 18 : 9.5) * mMult * atkMod);
-        let finalSpd = Math.max(4, Math.floor(((isThisBoss ? 11 : 8.5) + (battleState.floor * 0.08)) * spdMod) + individualSpdVariance);
+        let individualSpdVariance = getRandomInt(-2, 3);
+        let finalHp = Math.floor((isThisBoss ? 180 : 65) * mMult * hpMod);
+        let finalAtk = Math.floor((isThisBoss ? 18 : 11) * mMult * atkMod);
+        let finalSpd = Math.max(4, Math.floor(((isThisBoss ? 10 : 7.5) + (battleState.floor * 0.05)) * spdMod) + individualSpdVariance);
 
         battleState.monsters.push({
             uid: 'm'+i, name: mName, isBoss: isThisBoss, icon: mIcon, element: mElement, ai: mAI, stars: mStars, level: battleState.floor,
             stats: { 
-                hp: finalHp, atk: finalAtk, mag: Math.floor(finalAtk * 0.8), def: Math.floor((isThisBoss ? 10 : 5) * mMult), 
-                res: Math.floor((isThisBoss ? 10 : 5) * mMult), spd: finalSpd, acc: 100, eva: evaMod, critRate: 10 + (mStars * 2), critDmg: 150
+                hp: finalHp, atk: finalAtk, mag: Math.floor(finalAtk * 0.8), def: Math.floor((isThisBoss ? 8 : 4) * mMult), 
+                res: Math.floor((isThisBoss ? 8 : 4) * mMult), spd: finalSpd, acc: 100, eva: evaMod, critRate: 8 + (mStars * 1.5), critDmg: 150
             },
             maxHp: finalHp, currentHp: finalHp, actionGauge: getRandomInt(0, 30), isDead: false, buffs: [] 
         });
@@ -283,26 +298,48 @@ function applyDamage(actor, effActorStats, target, multiplier, isHero) {
     else if (ELEMENT_ADVANTAGES[target.element] === actor.element) elementMult = 0.75;
 
     let isCrit = Math.random() * 100 < (effActorStats.critRate || 10); 
-    let baseDmg = (effActorStats.atk * multiplier) - (effTargetStats.def * 0.5); 
-    if (baseDmg < 1) baseDmg = 1;
+    
+    let atkPower = effActorStats.atk || 10;
+    let targetDef = effTargetStats.def || 1;
 
+    // Mitigação de defesa suave e progressiva
+    let mitigation = targetDef / (targetDef + 60);
+    let rawDmg = (atkPower * multiplier) * (1 - mitigation);
+
+    // Bônus equilibrado: Heróis causam um pouco mais de dano, monstros batem de forma justa
+    let roleMultiplier = isHero ? 1.15 : 0.85; 
+
+    // Fator leve de nível para recompensar evolução
+    let levelFactor = 1 + ((actor.level || 1) * 0.03);
     let starDiff = actor.stars - target.stars;
-    let starMultiplier = Math.max(0.1, Math.min(3.0, 1 + (starDiff * 0.25))); 
+    let starMultiplier = Math.max(0.6, Math.min(2.0, 1 + (starDiff * 0.15))); 
+
+    let baseDmg = rawDmg * roleMultiplier * levelFactor;
 
     let finalDmg = Math.floor(baseDmg * starMultiplier * elementMult);
     finalDmg = Math.floor(isCrit ? finalDmg * ((effActorStats.critDmg || 150) / 100) : finalDmg);
+    
+    // Piso dinâmico de dano para evitar números excessivamente baixos ou altos demais
+    let minDmg = Math.max(4, Math.floor(atkPower * 0.20));
+    finalDmg = Math.max(minDmg, finalDmg);
 
     target.currentHp -= finalDmg; 
     animateAttack(actor.uid, !isHero); 
     
     let dmgClass = isCrit ? 'dmg-crit' : 'dmg-normal';
-    if(starMultiplier < 0.7) dmgClass = 'dmg-weak'; 
-    if(starMultiplier > 1.3 && !isCrit) dmgClass = 'dmg-strong'; 
+    if(starMultiplier < 0.8) dmgClass = 'dmg-weak'; 
+    if(starMultiplier > 1.2 && !isCrit) dmgClass = 'dmg-strong'; 
 
     showFloatingText(target.uid, finalDmg, dmgClass);
     
-    if (target.currentHp <= 0) { target.currentHp = 0; target.isDead = true; document.getElementById(`ent-${target.uid}`).classList.add('dead'); }
-    updateEntityBars(target); checkBattleEnd();
+    if (target.currentHp <= 0) { 
+        target.currentHp = 0; 
+        target.isDead = true; 
+        const entEl = document.getElementById(`ent-${target.uid}`);
+        if(entEl) entEl.classList.add('dead'); 
+    }
+    updateEntityBars(target); 
+    checkBattleEnd();
 }
 
 function applyHeal(actor, target, amount) {
