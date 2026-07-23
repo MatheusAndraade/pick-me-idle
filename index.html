@@ -32,187 +32,283 @@
         </div>
     </div>
 
-    <!-- Hub Principal -->
+    <!-- Hub Principal com Layout Inspirado na Referência -->
     <div id="screen-hub" class="screen hub-layout">
-        <aside class="sidebar">
-            <div class="brand"><h2>Pick Me Idle</h2></div>
-            <div class="player-hud">
-                <div class="hud-item"><span>💰 Ouro</span><strong id="ui-gold" class="text-gold">0</strong></div>
-                <div class="hud-item"><span>🏆 Andar Máx</span><strong id="ui-max-floor" class="text-primary">1</strong></div>
+        <aside class="sidebar" style="display: flex; flex-direction: column; background: #0f1117; border-right: 1px solid #1e293b; padding: 16px; width: 280px; height: 100vh; overflow-y: auto;">
+            
+            <!-- Topo da Sidebar: Título Centralizado -->
+            <div class="brand" style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+                <h2 style="font-size: 1.25rem; color: white; font-weight: 800; letter-spacing: 0.5px; text-align: center;">Pick <span style="color: var(--primary);">Me Idle</span></h2>
             </div>
-            <nav class="sidebar-nav">
-                <button onclick="switchTab('tab-map')" class="nav-btn play-tower-btn" id="btn-tab-map">🗺️ Jogar</button>
-                <button onclick="switchTab('tab-team')" class="nav-btn active" id="btn-tab-team">👥 Equipe</button>
-                <button onclick="switchTab('tab-lobby')" class="nav-btn" id="btn-tab-lobby">🏡 Lobby</button>
-                <button onclick="switchTab('tab-synthesis')" class="nav-btn" id="btn-tab-synthesis">✨ Síntese</button>
-                <button onclick="switchTab('tab-gacha')" class="nav-btn" id="btn-tab-gacha">🔮 Invocação</button>
-                <button onclick="switchTab('tab-inventory')" class="nav-btn" id="btn-tab-inventory">🎒 Mochila</button>
-                <button onclick="switchTab('tab-craft')" class="nav-btn" id="btn-tab-craft">⚒️ Forja</button>
+
+            <!-- Card de Perfil do Jogador (Apenas Nome, Ícone e Status Profissional) -->
+            <div class="sidebar-profile-card" style="background: #161b22; border: 1px solid #21262d; border-radius: 10px; padding: 14px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px;">
+                <div id="ui-player-icon" style="width: 44px; height: 44px; border-radius: 50%; background: #334155; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; overflow: hidden; border: 1px solid var(--primary); flex-shrink: 0;">
+                    🧙‍♂️
+                </div>
+                <div style="overflow: hidden;">
+                    <div id="ui-player-name" style="font-weight: bold; color: white; font-size: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Aventureiro</div>
+                    <div id="ui-player-status" style="font-size: 0.75rem; color: #34d399; margin-top: 2px; font-weight: 500;">🟢 Pronto para Batalha</div>
+                </div>
+            </div>
+
+            <!-- Player HUD (Ouro e Andar Máx - Lado a lado igual à referência) -->
+            <div class="player-hud" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px;">
+                <div class="hud-item" style="background: #161b22; padding: 10px 12px; border-radius: 8px; border: 1px solid #21262d; display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.4rem;">🪙</span>
+                    <div style="overflow: hidden;">
+                        <span style="font-size: 0.7rem; color: #94a3b8; display: block; text-transform: uppercase;">Ouro</span>
+                        <strong id="ui-gold" class="text-gold" style="font-size: 0.95rem; color: #fbbf24; font-weight: bold;">0</strong>
+                    </div>
+                </div>
+                <div class="hud-item" style="background: #161b22; padding: 10px 12px; border-radius: 8px; border: 1px solid #21262d; display: flex; align-items: center; gap: 10px;">
+                    <span style="font-size: 1.4rem;">🏆</span>
+                    <div style="overflow: hidden;">
+                        <span style="font-size: 0.7rem; color: #94a3b8; display: block; text-transform: uppercase;">Andar Máx</span>
+                        <strong id="ui-max-floor" class="text-primary" style="font-size: 0.95rem; color: #f43f5e; font-weight: bold;">1</strong>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navegação Lateral Estilizada com Cores Dinâmicas para Aba Ativa -->
+            <nav class="sidebar-nav" style="display: flex; flex-direction: column; gap: 6px; margin-bottom: auto;">
+                <button onclick="switchTab('tab-lobby')" class="nav-btn active" id="btn-tab-lobby" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: #1f2937; border: 1px solid var(--primary); border-radius: 8px; color: white; cursor: pointer; font-weight: 600; transition: 0.2s;">
+                    <span>🏡 Lobby</span> <span style="color: #64748b; font-size: 0.8rem;">›</span>
+                </button>
+                <button onclick="switchTab('tab-team')" class="nav-btn" id="btn-tab-team" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: #161b22; border: 1px solid #21262d; border-radius: 8px; color: #94a3b8; cursor: pointer; font-weight: 600; transition: 0.2s;">
+                    <span>👥 Equipe</span> <span style="color: #64748b; font-size: 0.8rem;">›</span>
+                </button>
+                <button onclick="switchTab('tab-synthesis')" class="nav-btn" id="btn-tab-synthesis" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: #161b22; border: 1px solid #21262d; border-radius: 8px; color: #94a3b8; cursor: pointer; font-weight: 600; transition: 0.2s;">
+                    <span>✨ Síntese</span> <span style="color: #64748b; font-size: 0.8rem;">›</span>
+                </button>
+                <button onclick="switchTab('tab-gacha')" class="nav-btn" id="btn-tab-gacha" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: #161b22; border: 1px solid #21262d; border-radius: 8px; color: #94a3b8; cursor: pointer; font-weight: 600; transition: 0.2s;">
+                    <span>🔮 Invocação</span> <span style="color: #64748b; font-size: 0.8rem;">›</span>
+                </button>
+                <button onclick="switchTab('tab-inventory')" class="nav-btn" id="btn-tab-inventory" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: #161b22; border: 1px solid #21262d; border-radius: 8px; color: #94a3b8; cursor: pointer; font-weight: 600; transition: 0.2s;">
+                    <span>🎒 Mochila</span> <span style="color: #64748b; font-size: 0.8rem;">›</span>
+                </button>
+                <button onclick="switchTab('tab-craft')" class="nav-btn" id="btn-tab-craft" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: #161b22; border: 1px solid #21262d; border-radius: 8px; color: #94a3b8; cursor: pointer; font-weight: 600; transition: 0.2s;">
+                    <span>⚒️ Forja</span> <span style="color: #64748b; font-size: 0.8rem;">›</span>
+                </button>
             </nav>
-            <div class="sidebar-footer" style="padding: 15px; margin-top: auto;">
-                <button onclick="returnToTitle()" class="btn-danger" style="width: 100%; font-size: 0.9rem; padding: 10px;">🏠 Tela Inicial</button>
+
+            <!-- Botões de Ação Inferiores (Jogar e Sair Centralizados e Sem Ícones) -->
+            <div style="margin-top: 15px; display: flex; flex-direction: column; gap: 8px;">
+                <button onclick="switchTab('tab-map')" class="nav-btn play-tower-btn" id="btn-tab-map" style="width: 100%; padding: 13px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border: none; border-radius: 8px; color: white; font-weight: bold; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3); text-align: center; justify-content: center;">
+                    Jogar
+                </button>
+                
+                <button onclick="returnToTitle()" style="width: 100%; display: flex; align-items: center; justify-content: center; background: #161b22; border: 1px solid #30363d; padding: 11px; border-radius: 8px; color: #ef4444; font-weight: bold; font-size: 0.9rem; cursor: pointer; transition: 0.2s; text-align: center;">
+                    Sair para o Menu
+                </button>
             </div>
         </aside>
 
-        <main class="main-content">
-            <section id="tab-team" class="tab active">
-                <div class="tab-header">
-                    <h2>Sua Equipe de Batalha</h2>
-                    <p>Atenção: Heróis que morrem em combate são <b>permanentemente deletados</b> com seus itens!</p>
+        <!-- Conteúdo Principal -->
+        <main class="main-content" style="flex: 1; display: flex; flex-direction: column; height: 100vh; overflow: hidden; background: #0b0e14;">
+            <!-- Top Bar com Saudação (Fade-out mantendo espaço estrutural) e Botão Melhorado -->
+            <header style="height: 60px; background: #0f1117; border-bottom: 1px solid #1e293b; display: flex; align-items: center; justify-content: space-between; padding: 0 24px;">
+                <div id="welcome-banner" style="display: flex; align-items: center; gap: 8px; color: white; font-size: 0.95rem; font-weight: 500; transition: opacity 1.5s ease, visibility 1.5s ease; opacity: 1; visibility: visible;">
+                    <span>👑</span> Bem-vindo de volta, <span id="ui-welcome-name" style="font-weight: bold; color: var(--primary);">Aventureiro</span>!
                 </div>
-                <div id="team-container" class="grid-container"></div>
-            </section>
+                <div style="margin-left: auto;">
+                    <button id="header-manage-btn" onclick="openModal('modal-lobby-manage')" style="background: #1e293b; color: #f8fafc; border: 1px solid #475569; padding: 8px 16px; border-radius: 6px; font-weight: bold; font-size: 0.85rem; cursor: pointer; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3); transition: 0.2s;">
+                        🎒 Gerenciar Heróis
+                    </button>
+                </div>
+            </header>
 
-            <section id="tab-lobby" class="tab">
-                <div class="tab-header village-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
-                    <div>
-                        <h2>🏡 Lobby</h2>
-                        <p>Um refúgio seguro onde todos os heróis convocados descansam e aguardam chamados para a batalha.</p>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="font-size: 0.9rem; color: #94a3b8;">Ordenar:</span>
-                        <select id="village-sort-select" onchange="renderVillage()" style="background: #0f1115; color: white; border: 1px solid #334155; padding: 8px 12px; border-radius: 6px; font-size: 0.9rem;">
-                            <option value="stars-desc">⭐ Estrelas (Maior)</option>
-                            <option value="level-desc">📈 Nível (Maior)</option>
-                            <option value="name-asc">🔤 Nome (A-Z)</option>
-                            <option value="class-asc">🛡️ Classe (A-Z)</option>
-                        </select>
-                    </div>
-                </div>
-                <div id="village-container" class="grid-container"></div>
-            </section>
-
-            <section id="tab-synthesis" class="tab">
-                <div class="tab-header">
-                    <h2>✨ Altar de Síntese</h2>
-                    <p>Use o auto-preencher para selecionar heróis compatíveis ou clique manualmente nos heróis do Lobby.</p>
-                </div>
-                <div class="synthesis-layout">
-                    <div class="synthesis-workspace">
-                        <h3>Altar</h3>
-                        <div class="synth-slots">
-                            <div class="synth-slot" id="slot-main" onclick="clearSynthSlot('main')">
-                                <span>Herói Principal</span>
-                                <div id="synth-main-preview" class="synth-preview-content">+ Clique no Lobby ao lado</div>
-                            </div>
-                            <div class="synth-plus">➕</div>
-                            <div class="synth-slot" id="slot-material" onclick="clearSynthSlot('material')">
-                                <span>Material de Sacrifício</span>
-                                <div id="synth-material-preview" class="synth-preview-content">+ Clique no Lobby ao lado</div>
-                            </div>
-                        </div>
-                        <button class="btn-secondary" onclick="autoFillSynthesis()" style="margin-top: 20px; width: 100%; padding: 10px; font-size: 1rem;">⚡ Auto-Preencher Compatíveis</button>
-                        <button class="btn-primary" id="btn-perform-synth" onclick="executeSynthesis()" disabled style="margin-top: 10px; padding: 12px 30px; font-size: 1.1rem; width:100%;">Realizar Síntese</button>
-                    </div>
+            <!-- Área Dinâmica das Abas Sem Vãos (Preenchimento Total) -->
+            <div style="flex: 1; overflow: hidden; position: relative; display: flex; flex-direction: column; background: #0b0e14;">
+                <div style="flex: 1; position: relative; overflow: hidden; display: flex; align-items: stretch; justify-content: stretch; background: #0b0e14;">
                     
-                    <div class="synthesis-sidebar-lobby">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
-                            <h3 style="margin:0;">Heróis no Lobby</h3>
-                            <select id="synth-sort-select" onchange="renderSynthesis()" style="background: #0f1115; color: white; border: 1px solid #334155; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem;">
-                                <option value="stars-desc">⭐ Estrelas</option>
-                                <option value="level-desc">📈 Nível</option>
-                                <option value="name-asc">🔤 Nome</option>
-                                <option value="class-asc">🛡️ Classe</option>
-                            </select>
+                    <!-- Aba Lobby preenchendo 100% da área sem sobras -->
+                    <section id="tab-lobby" class="tab active fullscreen-tab" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #0b0e14;">
+                        <div class="interactive-wrapper" style="width: 100%; height: 100%; position: relative; background: #0b0e14;">
+                            <img src="img/lobby.png" class="interactive-bg-img" alt="Lobby da Cidade" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                            <div id="lobby-walk-area" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
                         </div>
-                        <p style="font-size:0.85rem; color:#94a3b8; margin-bottom:10px;">Clique em um herói para adicioná-lo:</p>
-                        <div id="synth-lobby-list" class="synth-lobby-scroll"></div>
+                    </section>
+
+                    <!-- Aba Equipe preenchendo 100% da área sem sobras -->
+                    <section id="tab-team" class="tab fullscreen-tab" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #0b0e14;">
+                        <div class="interactive-wrapper" style="width: 100%; height: 100%; position: relative; background: #0b0e14;">
+                            <img src="img/torre.png" class="interactive-bg-img" alt="Torre de Batalha" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                            <div id="tower-walk-area" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
+                        </div>
+                    </section>
+
+                    <section id="tab-synthesis" class="tab" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #0b0e14; padding: 20px; overflow-y: auto;">
+                        <div class="tab-header">
+                            <h2>✨ Altar de Síntese</h2>
+                            <p>Use o auto-preencher para selecionar heróis compatíveis ou clique manualmente nos heróis do Lobby.</p>
+                        </div>
+                        <div class="synthesis-layout">
+                            <div class="synthesis-workspace">
+                                <h3>Altar</h3>
+                                <div class="synth-slots">
+                                    <div class="synth-slot" id="slot-main" onclick="clearSynthSlot('main')">
+                                        <span>Herói Principal</span>
+                                        <div id="synth-main-preview" class="synth-preview-content">+ Clique no Lobby ao lado</div>
+                                    </div>
+                                    <div class="synth-plus">➕</div>
+                                    <div class="synth-slot" id="slot-material" onclick="clearSynthSlot('material')">
+                                        <span>Material de Sacrifício</span>
+                                        <div id="synth-material-preview" class="synth-preview-content">+ Clique no Lobby ao lado</div>
+                                    </div>
+                                </div>
+                                <button class="btn-secondary" onclick="autoFillSynthesis()" style="margin-top: 20px; width: 100%; padding: 10px; font-size: 1rem;">⚡ Auto-Preencher Compatíveis</button>
+                                <button class="btn-primary" id="btn-perform-synth" onclick="executeSynthesis()" disabled style="margin-top: 10px; padding: 12px 30px; font-size: 1.1rem; width:100%;">Realizar Síntese</button>
+                            </div>
+                            
+                            <div class="synthesis-sidebar-lobby">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                                    <h3 style="margin:0;">Heróis no Lobby</h3>
+                                    <select id="synth-sort-select" onchange="renderSynthesis()" style="background: #0f1115; color: white; border: 1px solid #334155; padding: 4px 8px; border-radius: 6px; font-size: 0.8rem;">
+                                        <option value="stars-desc">⭐ Estrelas</option>
+                                        <option value="level-desc">📈 Nível</option>
+                                        <option value="name-asc">🔤 Nome</option>
+                                        <option value="class-asc">🛡️ Classe</option>
+                                    </select>
+                                </div>
+                                <p style="font-size:0.85rem; color:#94a3b8; margin-bottom:10px;">Clique em um herói para adicioná-lo:</p>
+                                <div id="synth-lobby-list" class="synth-lobby-scroll"></div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="tab-gacha" class="tab" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #0b0e14; padding: 20px; overflow-y: auto;">
+                        <div class="tab-header">
+                            <h2>Altar de Invocação</h2>
+                            <p>Novos heróis convocados vão direto para o Lobby se a equipe estiver cheia.</p>
+                        </div>
+                        <div class="gacha-card-container">
+                            <div class="gacha-portal-glow">🌌</div>
+                            <div class="gacha-info-box">
+                                <h3>Portal Dimensional</h3>
+                                <p>Convoque heróis únicos de <strong>⭐1 a ⭐7 estrelas</strong> de diferentes classes para preencher suas fileiras.</p>
+                            </div>
+                            <div class="gacha-buttons-grid">
+                                <button onclick="summonHero(1)" class="btn-gacha-opt btn-gacha-1">
+                                    <span class="gacha-btn-title">Invocar 1x</span>
+                                    <span class="gacha-btn-cost">100 💰 Ouro</span>
+                                </button>
+                                <button onclick="summonHero(5)" class="btn-gacha-opt btn-gacha-5">
+                                    <span class="gacha-btn-title">Invocar 5x</span>
+                                    <span class="gacha-btn-cost">500 💰 Ouro</span>
+                                </button>
+                                <button onclick="summonHero(10)" class="btn-gacha-opt btn-gacha-max">
+                                    <span class="gacha-btn-title">Invocar 10x</span>
+                                    <span class="gacha-btn-cost">1000 💰 Ouro</span>
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="tab-inventory" class="tab" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #0b0e14; padding: 20px; overflow-y: auto;">
+                        <div class="tab-header">
+                            <h2>Mochila</h2>
+                            <p>Seus itens e materiais guardados.</p>
+                        </div>
+                        <div class="inventory-split">
+                            <div class="inv-section"><h3>Materiais</h3><ul id="material-list" class="mat-list"></ul></div>
+                            <div class="inv-section"><h3>Equipamentos</h3><div id="equip-list" class="equip-grid"></div></div>
+                        </div>
+                    </section>
+
+                    <section id="tab-craft" class="tab" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #0b0e14; padding: 20px; overflow-y: auto;">
+                        <div class="tab-header">
+                            <h2>Forja de Equipamentos</h2>
+                            <p>Crie armas e armaduras poderosas usando os materiais da mochila.</p>
+                        </div>
+
+                        <div class="craft-filter-panel">
+                            <div class="craft-filter-group">
+                                <select id="craft-type-filter" onchange="renderCraft()" class="craft-select-type">
+                                    <option value="All">Todos os Tipos</option>
+                                    <option value="Arma">Armas</option>
+                                    <option value="Armadura">Armaduras</option>
+                                </select>
+                            </div>
+                            <div class="craft-filter-rarities" id="craft-rarity-filters">
+                                <button class="filter-pill active" data-rarity="Comum" onclick="toggleRarityFilter('Comum')">Comum</button>
+                                <button class="filter-pill active" data-rarity="Raro" onclick="toggleRarityFilter('Raro')">Raro</button>
+                                <button class="filter-pill active" data-rarity="Épico" onclick="toggleRarityFilter('Épico')">Épico</button>
+                                <button class="filter-pill active" data-rarity="Lendário" onclick="toggleRarityFilter('Lendário')">Lendário</button>
+                                <button class="filter-pill active" data-rarity="Único" onclick="toggleRarityFilter('Único')">Único</button>
+                            </div>
+                        </div>
+
+                        <div id="craft-container" class="grid-container"></div>
+                    </section>
+
+                    <section id="tab-map" class="tab" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #0b0e14; padding: 20px; overflow-y: auto;">
+                        <div class="tab-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <div>
+                                <h2>Mapa da Torre</h2>
+                                <p>Suba a trilha com cuidado. A morte na torre é definitiva!</p>
+                            </div>
+                            <label class="farm-loop-toggle" style="display: flex; align-items: center; gap: 8px; background: var(--bg-panel); padding: 10px 15px; border-radius: 8px; border: 1px solid #334155; cursor:pointer;">
+                                <input type="checkbox" id="farm-loop-checkbox" onchange="toggleFarmLoop(this)" style="width:18px; height:18px; accent-color: var(--primary);">
+                                <span style="font-weight:600; font-size:0.95rem;">🔄 Modo Loop (Farm Automático)</span>
+                            </label>
+                        </div>
+                        <div id="map-container" class="map-trail-container"></div>
+                    </section>
+                </div>
+
+                <!-- Barra Inferior de Atalhos -->
+                <div class="bottom-shortcuts-bar" style="background: #0f1117; border-top: 1px solid #1e293b; padding: 12px 24px; display: grid; grid-template-columns: repeat(3, 1fr) 1.5fr; gap: 15px; align-items: center; z-index: 10;">
+                    <div style="background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 1.3rem;">📅</span>
+                        <div>
+                            <div style="color: white; font-weight: bold; font-size: 0.85rem;">Eventos Ativos</div>
+                            <div style="color: #94a3b8; font-size: 0.7rem;">2 eventos rolando!</div>
+                        </div>
+                    </div>
+                    <div style="background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 1.3rem;">🎁</span>
+                        <div>
+                            <div style="color: white; font-weight: bold; font-size: 0.85rem;">Recompensa Diária</div>
+                            <div style="color: #94a3b8; font-size: 0.7rem;">Resgate sua recompensa!</div>
+                        </div>
+                    </div>
+                    <div style="background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 1.3rem;">📜</span>
+                        <div>
+                            <div style="color: white; font-weight: bold; font-size: 0.85rem;">Missões</div>
+                            <div style="color: #94a3b8; font-size: 0.7rem;">3/5 concluídas</div>
+                        </div>
+                    </div>
+                    <div style="background: linear-gradient(135deg, #161b22 0%, #1f2937 100%); border: 1px solid #334155; border-radius: 8px; padding: 8px 14px; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <div style="color: #fbbf24; font-weight: bold; font-size: 0.85rem;">Pacote do Aventureiro</div>
+                            <div style="color: #94a3b8; font-size: 0.65rem;">Itens especiais esperando por você!</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 1.4rem;">👑</span>
+                            <span style="color: #64748b; font-size: 0.9rem;">›</span>
+                        </div>
                     </div>
                 </div>
-            </section>
-
-            <section id="tab-gacha" class="tab">
-                <div class="tab-header">
-                    <h2>Altar de Invocação</h2>
-                    <p>Novos heróis convocados vão direto para o Lobby se a equipe estiver cheia.</p>
-                </div>
-                <div class="gacha-card-container">
-                    <div class="gacha-portal-glow">🌌</div>
-                    <div class="gacha-info-box">
-                        <h3>Portal Dimensional</h3>
-                        <p>Convoque heróis únicos de <strong>⭐1 a ⭐7 estrelas</strong> de diferentes classes para preencher suas fileiras.</p>
-                    </div>
-                    <div class="gacha-buttons-grid">
-                        <button onclick="summonHero(1)" class="btn-gacha-opt btn-gacha-1">
-                            <span class="gacha-btn-title">Invocar 1x</span>
-                            <span class="gacha-btn-cost">100 💰 Ouro</span>
-                        </button>
-                        <button onclick="summonHero(5)" class="btn-gacha-opt btn-gacha-5">
-                            <span class="gacha-btn-title">Invocar 5x</span>
-                            <span class="gacha-btn-cost">500 💰 Ouro</span>
-                        </button>
-                        <button onclick="summonHero(10)" class="btn-gacha-opt btn-gacha-max">
-                            <span class="gacha-btn-title">Invocar 10x</span>
-                            <span class="gacha-btn-cost">1000 💰 Ouro</span>
-                        </button>
-                    </div>
-                </div>
-            </section>
-
-            <section id="tab-inventory" class="tab">
-                <div class="tab-header">
-                    <h2>Mochila</h2>
-                    <p>Seus itens e materiais guardados.</p>
-                </div>
-                <div class="inventory-split">
-                    <div class="inv-section"><h3>Materiais</h3><ul id="material-list" class="mat-list"></ul></div>
-                    <div class="inv-section"><h3>Equipamentos</h3><div id="equip-list" class="equip-grid"></div></div>
-                </div>
-            </section>
-
-            <section id="tab-craft" class="tab">
-                <div class="tab-header">
-                    <h2>Forja de Equipamentos</h2>
-                    <p>Crie armas e armaduras poderosas usando os materiais da mochila.</p>
-                </div>
-
-                <!-- Painel de Filtros inspirado no modelo fornecido -->
-                <div class="craft-filter-panel">
-                    <div class="craft-filter-group">
-                        <select id="craft-type-filter" onchange="renderCraft()" class="craft-select-type">
-                            <option value="All">Todos os Tipos</option>
-                            <option value="Arma">Armas</option>
-                            <option value="Armadura">Armaduras</option>
-                        </select>
-                    </div>
-                    <div class="craft-filter-rarities" id="craft-rarity-filters">
-                        <button class="filter-pill active" data-rarity="Comum" onclick="toggleRarityFilter('Comum')">Comum</button>
-                        <button class="filter-pill active" data-rarity="Raro" onclick="toggleRarityFilter('Raro')">Raro</button>
-                        <button class="filter-pill active" data-rarity="Épico" onclick="toggleRarityFilter('Épico')">Épico</button>
-                        <button class="filter-pill active" data-rarity="Lendário" onclick="toggleRarityFilter('Lendário')">Lendário</button>
-                        <button class="filter-pill active" data-rarity="Único" onclick="toggleRarityFilter('Único')">Único</button>
-                    </div>
-                </div>
-
-                <div id="craft-container" class="grid-container"></div>
-            </section>
-
-            <section id="tab-map" class="tab">
-                <div class="tab-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                    <div>
-                        <h2>Mapa da Torre</h2>
-                        <p>Suba a trilha com cuidado. A morte na torre é definitiva!</p>
-                    </div>
-                    <label class="farm-loop-toggle" style="display: flex; align-items: center; gap: 8px; background: var(--bg-panel); padding: 10px 15px; border-radius: 8px; border: 1px solid #334155; cursor:pointer;">
-                        <input type="checkbox" id="farm-loop-checkbox" onchange="toggleFarmLoop(this)" style="width:18px; height:18px; accent-color: var(--primary);">
-                        <span style="font-weight:600; font-size:0.95rem;">🔄 Modo Loop (Farm Automático)</span>
-                    </label>
-                </div>
-                <div id="map-container" class="map-trail-container"></div>
-            </section>
+            </div>
         </main>
     </div>
 
     <!-- Tela de Batalha -->
     <div id="screen-battle" class="screen">
-        <header class="battle-header">
-            <h2 id="battle-floor-title">Andar 1</h2>
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <label style="display: flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.4); padding: 6px 12px; border-radius: 6px; border: 1px solid #334155; cursor:pointer; font-size: 0.9rem;">
-                    <input type="checkbox" id="battle-loop-checkbox" onchange="toggleFarmLoop(this)" style="width:16px; height:16px; accent-color: var(--primary);">
-                    <span>🔄 Loop</span>
+        <header class="battle-header" style="background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.75) 100%); border-bottom: 1px solid rgba(245, 158, 11, 0.2); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);">
+            <div style="display: flex; align-items: center;">
+                <label style="display: flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.4); padding: 6px 12px; border-radius: 6px; border: 1px solid #334155; cursor:pointer; font-size: 0.9rem; color: white;">
+                    <input type="checkbox" id="battle-loop-checkbox" onchange="toggleFarmLoop(this)" style="width:16px; height:16px; accent-color: var(--primary); cursor: pointer;">
+                    <span>Loop</span>
                 </label>
-                <button onclick="fleeBattle()" class="btn-danger">Fugir (Voltar)</button>
+            </div>
+            
+            <div id="battle-floor-title" style="flex: 1; display: flex; justify-content: center;"></div>
+
+            <div style="display: flex; align-items: center;">
+                <button onclick="fleeBattle()" class="btn-desistir" style="background: #ef4444; color: white; border: none; padding: 6px 14px; border-radius: 6px; font-weight: bold; cursor: pointer;">Desistir</button>
             </div>
         </header>
         
@@ -225,7 +321,42 @@
         <div id="floating-text-container"></div>
     </div>
 
-    <!-- Modais -->
+    <!-- Modais de Gerenciamento -->
+    <div id="modal-lobby-manage" class="modal">
+        <div class="modal-content management-modal-panel">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #334155; padding-bottom: 15px;">
+                <h3 style="color: white; font-size: 1.5rem;">Heróis no Lobby</h3>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 0.9rem; color: #94a3b8;">Ordenar:</span>
+                        <select id="village-sort-select" onchange="renderVillage()" style="background: #0f1115; color: white; border: 1px solid #334155; padding: 8px 12px; border-radius: 6px; font-size: 0.9rem;">
+                            <option value="stars-desc">⭐ Estrelas (Maior)</option>
+                            <option value="level-desc">📈 Nível (Maior)</option>
+                            <option value="name-asc">🔤 Nome (A-Z)</option>
+                            <option value="class-asc">🛡️ Classe (A-Z)</option>
+                        </select>
+                    </div>
+                    <button onclick="closeModal('modal-lobby-manage')" class="btn-secondary">✖ Fechar</button>
+                </div>
+            </div>
+            <div id="village-container" class="grid-container"></div>
+        </div>
+    </div>
+
+    <div id="modal-team-manage" class="modal">
+        <div class="modal-content management-modal-panel">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; border-bottom: 1px solid #334155; padding-bottom: 15px;">
+                <div>
+                    <h3 style="color: white; font-size: 1.5rem;">Gerenciar Equipe de Combate</h3>
+                    <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 5px;">Atenção: Heróis que morrem em combate são <b>permanentemente deletados</b> com seus itens!</p>
+                </div>
+                <button onclick="closeModal('modal-team-manage')" class="btn-secondary">✖ Fechar</button>
+            </div>
+            <div id="team-container" class="grid-container"></div>
+        </div>
+    </div>
+
+    <!-- Modais Genéricos -->
     <div id="modal-victory" class="modal">
         <div class="modal-content victory-panel">
             <h2 class="text-primary">Vitória!</h2>
@@ -254,14 +385,25 @@
         </div>
     </div>
 
+    <!-- Modal Novo Jogo com Seletor de Ícones Funcional -->
     <div id="modal-new-game" class="modal">
-        <div class="modal-content" style="text-align: center;">
-            <h3>Criar Novo Jogo</h3>
-            <p style="color: #94a3b8; font-size: 0.9rem; margin: 10px 0;">Digite o nome do seu novo save:</p>
-            <input type="text" id="new-save-name" placeholder="Ex: Aventura 1" style="width: 100%; padding: 12px; background: #0f1115; border: 1px solid #334155; color: white; border-radius: 6px; font-size: 1rem; margin-bottom: 20px;">
+        <div class="modal-content" style="text-align: center; max-width: 380px;">
+            <h3 style="color: white; margin-bottom: 5px;">Criar Novo Jogo</h3>
+            <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 15px;">Escolha seu ícone e digite seu nome de aventureiro:</p>
+            
+            <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 20px;" id="avatar-selector">
+                <div class="avatar-option active" onclick="window.selectAvatar('🧙‍♂️', this)" style="width: 42px; height: 42px; border-radius: 50%; background: #161b22; border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; cursor: pointer; transition: 0.2s;">🧙‍♂️</div>
+                <div class="avatar-option" onclick="window.selectAvatar('⚔️', this)" style="width: 42px; height: 42px; border-radius: 50%; background: #161b22; border: 2px solid #334155; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; transition: 0.2s;">⚔️</div>
+                <div class="avatar-option" onclick="window.selectAvatar('🧝‍♀️', this)" style="width: 42px; height: 42px; border-radius: 50%; background: #161b22; border: 2px solid #334155; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; cursor: pointer; transition: 0.2s;">🧝‍♀️</div>
+                <div class="avatar-option" onclick="window.selectAvatar('🛡️', this)" style="width: 42px; height: 42px; border-radius: 50%; background: #161b22; border: 2px solid #334155; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; transition: 0.2s;">🛡️</div>
+                <div class="avatar-option" onclick="window.selectAvatar('🐉', this)" style="width: 42px; height: 42px; border-radius: 50%; background: #161b22; border: 2px solid #334155; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; cursor: pointer; transition: 0.2s;">🐉</div>
+            </div>
+
+            <input type="text" id="new-save-name" placeholder="Ex: Aventureiro" style="width: 100%; padding: 12px; background: #0f1115; border: 1px solid #334155; color: white; border-radius: 6px; font-size: 1rem; margin-bottom: 20px; text-align: center;">
+            
             <div style="display: flex; gap: 10px;">
-                <button onclick="createNewGame()" class="btn-primary" style="flex: 1;">Criar e Jogar</button>
-                <button onclick="closeModal('modal-new-game')" class="btn-secondary" style="flex: 1;">Cancelar</button>
+                <button onclick="createNewGame()" class="btn-primary" style="flex: 1; padding: 12px;">Criar e Jogar</button>
+                <button onclick="closeModal('modal-new-game')" class="btn-secondary" style="flex: 1; padding: 12px;">Cancelar</button>
             </div>
         </div>
     </div>

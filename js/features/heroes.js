@@ -22,9 +22,10 @@ export function generateHero(forceStars = null) {
     return {
         id: Date.now() + Math.random(), name: name, class: heroClass, element: element, rarity: rarityObj.name, stars: rarityObj.stars,
         level: 1, exp: 0, rank: 1,
-        selectedSkills: [null, null], /* Novos Slots de Skill */
+        selectedSkills: [null, null],
         baseStats: { 
             hp: Math.floor(100 * cMods.hp * rarityObj.statMod), 
+            mp: Math.floor(60 * rarityObj.statMod), 
             atk: Math.floor(15 * cMods.atk * rarityObj.statMod), 
             mag: Math.floor(12 * cMods.mag * rarityObj.statMod), 
             def: Math.floor(10 * cMods.def * rarityObj.statMod), 
@@ -47,6 +48,7 @@ export function getTotalStats(hero) {
     let rankMultiplier = 1 + ((hero.rank - 1) * 0.3); 
     let stats = { 
         hp: Math.floor(hero.baseStats.hp * rankMultiplier), 
+        mp: Math.floor((hero.baseStats.mp || 60) * rankMultiplier),
         atk: Math.floor(hero.baseStats.atk * rankMultiplier), 
         mag: Math.floor(hero.baseStats.mag * rankMultiplier), 
         def: Math.floor(hero.baseStats.def * rankMultiplier), 
@@ -95,7 +97,6 @@ export function summonHero(amount) {
 
 export function showSummonResultsModal(list) {
     const wrapper = document.getElementById('summon-content-wrapper');
-    
     wrapper.innerHTML = `
         <div class="summon-animation-box">
             <div class="summon-orb">🔮✨</div>
@@ -103,12 +104,10 @@ export function showSummonResultsModal(list) {
             <p style="color: #94a3b8; font-size: 0.95rem;">Manifestando energias estelares para invocar heróis...</p>
         </div>
     `;
-    
     openModal('modal-summon-results');
 
     setTimeout(() => {
         let heroText = list.length === 1 ? '1 herói convocado com sucesso!' : `${list.length} heróis convocados com sucesso!`;
-        
         let gridHTML = `
             <h2 class="text-primary" style="margin-bottom: 5px;">🔮 Invocação Concluída!</h2>
             <p style="color: #94a3b8; font-size: 0.95rem; margin-bottom: 15px;">${heroText}</p>
@@ -130,7 +129,6 @@ export function showSummonResultsModal(list) {
             </div>
             <button onclick="window.closeModal('modal-summon-results')" class="btn-primary" style="margin-top: 20px; width: 100%; padding: 12px; font-size: 1.1rem;">Continuar</button>
         `;
-
         wrapper.innerHTML = gridHTML;
     }, 1200);
 }
@@ -191,21 +189,27 @@ export function renderVillage() {
                             <div class="avatar">${CLASSES[h.class].icon}</div>
                         </div>
                         <div class="hero-info">
-                            <h3>${h.name} <span style="font-size:0.8rem; background:#334155; padding:2px 6px; border-radius:4px;">R${h.rank}</span></h3>
-                            <span style="color:${cColor}">${'⭐'.repeat(h.stars)} (${h.rarity})</span>
-                            <div style="font-size:0.8rem; color:#94a3b8; margin-top:2px">${h.class} &bull; ${ELEMENT_ICONS[h.element]} ${h.element}</div>
+                            <h3>${h.name} <span class="r-badge">R${h.rank}</span></h3>
+                            <div class="hero-stars">${'⭐'.repeat(h.stars)}</div>
+                            <div style="font-size:0.8rem; color:#94a3b8; margin-top:2px"><span style="color:${cColor}">${h.rarity}</span> &bull; ${h.class} &bull; ${ELEMENT_ICONS[h.element]} ${h.element}</div>
                         </div>
                     </div>
                     <div class="hero-level-badge">Nível ${h.level}</div>
+                    
                     <div class="hero-stats">
-                        <p><span>❤️ HP</span> <span style="color:var(--hp-color)">${total.hp}</span></p>
-                        <p><span>⚔️ ATK</span> <span style="color:#f59e0b">${total.atk}</span> &bull; <span>🔮 MAG</span> <span style="color:#38bdf8">${total.mag}</span></p>
-                        <p><span>🛡️ DEF</span> <span style="color:#94a3b8">${total.def}</span> &bull; <span>✨ RES</span> <span style="color:#c084fc">${total.res}</span></p>
-                        <p><span>⚡ SPD</span> <span>${total.spd}</span> &bull; <span>🎯 ACC/EVA</span> <span>${total.acc}/${total.eva}</span></p>
+                        <p><span>❤️ HP</span> <span>${total.hp}</span></p>
+                        <p><span>💙 MP</span> <span>${total.mp}</span></p>
+                        <p><span>⚔️ ATK</span> <span>${total.atk}</span></p>
+                        <p><span>🔮 MAG</span> <span>${total.mag}</span></p>
+                        <p><span>🛡️ DEF</span> <span>${total.def}</span></p>
+                        <p><span>✨ RES</span> <span>${total.res}</span></p>
+                        <p><span>⚡ SPD</span> <span>${total.spd}</span></p>
+                        <p><span>🎯 ACC/EVA</span> <span>${total.acc}/${total.eva}</span></p>
                     </div>
+
                     <div style="display: flex; gap: 8px; margin-top: auto;">
-                        <button class="btn-secondary" style="flex:1; font-size:0.85rem;" onclick="window.sendToTeam(${h.id})">Convocar p/ Equipe</button>
-                        <button class="btn-danger" style="font-size:0.85rem;" onclick="window.dismissVillageHero(${h.id})">Dispensar</button>
+                        <button class="btn-primary" style="flex:1;" onclick="window.sendToTeam(${h.id})">Convocar p/ Equipe</button>
+                        <button class="btn-danger" style="flex:1;" onclick="window.dismissVillageHero(${h.id})">Dispensar</button>
                     </div>
                 </div>`;
         });
@@ -389,6 +393,7 @@ export function executeSynthesis() {
 
     mainH.rank++;
     mainH.baseStats.hp = Math.floor(mainH.baseStats.hp * 1.2);
+    mainH.baseStats.mp = Math.floor((mainH.baseStats.mp || 60) * 1.2);
     mainH.baseStats.atk = Math.floor(mainH.baseStats.atk * 1.2);
     mainH.baseStats.mag = Math.floor(mainH.baseStats.mag * 1.2);
     mainH.baseStats.def = Math.floor(mainH.baseStats.def * 1.2);
@@ -427,20 +432,23 @@ export function renderTeam() {
         const cColor = rObj ? rObj.color : '#94a3b8'; 
         const total = getTotalStats(h);
         
-        // Items
         const armaClick = h.equipment.Arma ? `window.unequip(${h.id}, 'Arma')` : `window.openHeroEquipModal(${h.id}, 'Arma')`;
-        const armaHTML = h.equipment.Arma ? `<span style="color:${ITEM_RARITIES[h.equipment.Arma.rarity || 'Comum'].color}; font-size:0.75rem;">${h.equipment.Arma.name}</span>` : `<span style="font-size:1.3rem">+</span><span>Arma</span>`;
+        const armaHTML = h.equipment.Arma ? `<span style="color:${ITEM_RARITIES[h.equipment.Arma.rarity || 'Comum'].color}; font-size:0.75rem;">${h.equipment.Arma.name}</span>` : `<span style="font-size:1.1rem">+</span><span>Arma</span>`;
         const armaduraClick = h.equipment.Armadura ? `window.unequip(${h.id}, 'Armadura')` : `window.openHeroEquipModal(${h.id}, 'Armadura')`;
-        const armaduraHTML = h.equipment.Armadura ? `<span style="color:${ITEM_RARITIES[h.equipment.Armadura.rarity || 'Comum'].color}; font-size:0.75rem;">${h.equipment.Armadura.name}</span>` : `<span style="font-size:1.3rem">+</span><span>Armadura</span>`;
+        const armaduraHTML = h.equipment.Armadura ? `<span style="color:${ITEM_RARITIES[h.equipment.Armadura.rarity || 'Comum'].color}; font-size:0.75rem;">${h.equipment.Armadura.name}</span>` : `<span style="font-size:1.1rem">+</span><span>Armadura</span>`;
 
-        // Skills (Retrocompatibilidade)
         if(!h.selectedSkills) h.selectedSkills = [null, null];
         const heroClassSkills = CLASS_SKILLS[h.class] || [];
         
         let skillsHTML = h.selectedSkills.map((sId, slotIdx) => {
+            // TRAVA DO SLOT 2 A PARTIR DO NÍVEL 10
+            if (slotIdx === 1 && h.level < 10) {
+                return `<div class="skill-slot locked" style="opacity:0.5; background:#090a0d; border:1px dashed #475569; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:4px;"><span style="font-size:0.7rem; color:#94a3b8; font-weight:bold;">🔒 Nível 10</span></div>`;
+            }
+
             let sk = sId ? heroClassSkills.find(s => s.id === sId) : null;
             if(sk) {
-                return `<div class="skill-slot filled" onclick="window.unequipSkill(${h.id}, ${slotIdx})"><span style="font-size:1.2rem;">${sk.icon}</span><span style="font-size:0.65rem;">${sk.name}</span></div>`;
+                return `<div class="skill-slot filled" onclick="window.unequipSkill(${h.id}, ${slotIdx})"><span style="font-size:1.1rem;">${sk.icon}</span><span style="font-size:0.65rem;">${sk.name}</span></div>`;
             } else {
                 return `<div class="skill-slot" onclick="window.openHeroSkillModal(${h.id}, ${slotIdx})"><span style="font-size:1.1rem">+</span><span>Skill ${slotIdx+1}</span></div>`;
             }
@@ -460,31 +468,33 @@ export function renderTeam() {
                         <div class="avatar">${CLASSES[h.class].icon}</div>
                     </div>
                     <div class="hero-info">
-                        <h3>${h.name} <span style="font-size:0.8rem; background:#334155; padding:2px 6px; border-radius:4px;">R${h.rank}</span></h3>
-                        <span style="color:${cColor}">${'⭐'.repeat(h.stars)} (${h.rarity})</span>
-                        <div style="font-size:0.8rem; color:#94a3b8; margin-top:2px">${h.class} &bull; ${ELEMENT_ICONS[h.element]} ${h.element}</div>
+                        <h3>${h.name} <span class="r-badge">R${h.rank}</span></h3>
+                        <div class="hero-stars">${'⭐'.repeat(h.stars)}</div>
+                        <div style="font-size:0.8rem; color:#94a3b8; margin-top:2px"><span style="color:${cColor}">${h.rarity}</span> &bull; ${h.class} &bull; ${ELEMENT_ICONS[h.element]} ${h.element}</div>
                     </div>
                 </div>
                 <div class="hero-level-badge">Nível ${h.level}</div>
                 
-                <!-- Habilidades -->
                 <div class="hero-skills">${skillsHTML}</div>
 
                 <div class="hero-stats">
-                    <p><span>❤️ HP</span> <span style="color:var(--hp-color)">${total.hp}</span></p>
-                    <p><span>⚔️ ATK</span> <span style="color:#f59e0b">${total.atk}</span> &bull; <span>🔮 MAG</span> <span style="color:#38bdf8">${total.mag}</span></p>
-                    <p><span>🛡️ DEF</span> <span style="color:#94a3b8">${total.def}</span> &bull; <span>✨ RES</span> <span style="color:#c084fc">${total.res}</span></p>
-                    <p><span>⚡ SPD</span> <span>${total.spd}</span> &bull; <span>🎯 ACC/EVA</span> <span>${total.acc}/${total.eva}</span></p>
+                    <p><span>❤️ HP</span> <span>${total.hp}</span></p>
+                    <p><span>💙 MP</span> <span>${total.mp}</span></p>
+                    <p><span>⚔️ ATK</span> <span>${total.atk}</span></p>
+                    <p><span>🔮 MAG</span> <span>${total.mag}</span></p>
+                    <p><span>🛡️ DEF</span> <span>${total.def}</span></p>
+                    <p><span>✨ RES</span> <span>${total.res}</span></p>
+                    <p><span>⚡ SPD</span> <span>${total.spd}</span></p>
+                    <p><span>🎯 ACC/EVA</span> <span>${total.acc}/${total.eva}</span></p>
                 </div>
                 
-                <!-- Equipamentos -->
                 <div class="hero-equips">
                     <div class="equip-slot ${h.equipment.Arma ? 'filled' : ''}" onclick="${armaClick}">${armaHTML}</div>
                     <div class="equip-slot ${h.equipment.Armadura ? 'filled' : ''}" onclick="${armaduraClick}">${armaduraHTML}</div>
                 </div>
-                <div style="display:flex; gap:8px;">
-                    <button class="btn-secondary" style="flex:1;" onclick="window.sendToVillage(${h.id})">Mandar Lobby</button>
-                    <button class="btn-danger" style="flex:1;" onclick="window.dismissHero(${h.id})">Dispensar</button>
+                <div style="display:flex; gap:8px; margin-top: 4px;">
+                    <button class="btn-secondary" style="flex:1; padding: 10px;" onclick="window.sendToVillage(${h.id})">Mandar Lobby</button>
+                    <button class="btn-danger" style="flex:1; padding: 10px;" onclick="window.dismissHero(${h.id})">Dispensar</button>
                 </div>
             </div>`;
     });
@@ -540,12 +550,16 @@ export function unequip(heroId, type) {
     }
 }
 
-/* ======== GESTÃO DE SKILLS ======== */
-
 export function openHeroSkillModal(heroId, slotIndex) {
+    const hero = game.heroes.find(h => h.id === heroId);
+    if (!hero) return;
+
+    if (slotIndex === 1 && hero.level < 10) {
+        return notify("O Slot 2 de habilidades só é liberado a partir do Nível 10!");
+    }
+
     setEquipTargetHeroId(heroId);
     setEquipTargetSkillSlot(slotIndex);
-    const hero = game.heroes.find(h => h.id === heroId);
     
     document.getElementById('hero-skill-title').innerText = `Selecionar Habilidade (Slot ${slotIndex + 1})`;
     const list = document.getElementById('modal-skill-list'); 
@@ -554,9 +568,9 @@ export function openHeroSkillModal(heroId, slotIndex) {
     const availableSkills = CLASS_SKILLS[hero.class] || [];
     availableSkills.forEach(sk => {
         let isEquipped = hero.selectedSkills.includes(sk.id);
-        
         let targetText = sk.target === 'single' ? 'Alvo Único' : sk.target === 'enemies' ? 'Em Área (Inimigos)' : sk.target === 'self' ? 'Si Mesmo' : 'Equipe';
         let typeColor = sk.type === 'damage' ? '#ef4444' : sk.type === 'heal' ? '#10b981' : sk.type === 'buff' ? '#38bdf8' : '#c084fc';
+        let mpCost = sk.mpCost || 15;
 
         if(isEquipped) {
             list.innerHTML += `
@@ -567,12 +581,11 @@ export function openHeroSkillModal(heroId, slotIndex) {
             list.innerHTML += `
                 <button class="equip-select-btn" onclick="window.equipSkillToTarget('${sk.id}')" style="border-left: 4px solid ${typeColor}">
                     <div style="font-weight:bold; color:${typeColor}; font-size:1.1rem; margin-bottom:4px;">${sk.icon} ${sk.name}</div>
-                    <div style="font-size:0.8rem; color:#94a3b8; margin-bottom: 4px;">🎯 ${targetText} &nbsp;|&nbsp; ⏳ Recarga: ${sk.cd} turnos</div>
+                    <div style="font-size:0.8rem; color:#94a3b8; margin-bottom: 4px;">🎯 ${targetText} &nbsp;|&nbsp; ⚡ MP: ${mpCost} &nbsp;|&nbsp; ⏳ Recarga: ${sk.cd} turnos</div>
                     <div style="font-size:0.85rem; color:#cbd5e1;">${sk.desc}</div>
                 </button>`;
         }
     });
-    
     openModal('modal-skill-equip');
 }
 

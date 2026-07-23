@@ -2,7 +2,12 @@ export let currentSaveKey = null;
 export function setCurrentSaveKey(key) { currentSaveKey = key; }
 
 export let game = {
-    gold: 500, maxFloor: 1, 
+    playerName: 'Aventureiro',
+    playerIcon: '🧙‍♂️',
+    playerLevel: 1,
+    playerExp: 0,
+    gold: 500, 
+    maxFloor: 1, 
     heroes: [],     
     village: [],    
     inventory: { materials: { Minério: 0, Madeira: 0, Couro: 0, Tecido: 0, Cristal: 0, 'Essência de Dragão': 0 }, equips: [] },
@@ -10,11 +15,23 @@ export let game = {
     playTime: 0,
     pendingLevelUps: [],
     sessionStartStats: {},
+    heroPositions: {},
+    towerHeroPositions: {},
     lastOnline: Date.now()
 };
 export function setGame(newGame) { game = newGame; }
 
-export let battleState = { active: false, floor: 1, heroes: [], monsters: [], tickRate: 40, runLoot: {} };
+export let battleState = { 
+    active: false, 
+    floor: 1, 
+    heroes: [], 
+    monsters: [], 
+    tickRate: 40, 
+    runLoot: {},
+    totalCommonMonsters: 0, 
+    defeatedMonstersCount: 0, 
+    bossSpawned: false 
+};
 
 export let battleInterval = null;
 export function setBattleInterval(val) { battleInterval = val; }
@@ -28,7 +45,6 @@ export function setEquipTargetHeroId(val) { equipTargetHeroId = val; }
 export let equipTargetType = null;
 export function setEquipTargetType(val) { equipTargetType = val; }
 
-/* Nova Variável para Equipamento de Skills */
 export let equipTargetSkillSlot = null;
 export function setEquipTargetSkillSlot(val) { equipTargetSkillSlot = val; }
 
@@ -37,6 +53,10 @@ export function setSynthMainHeroId(val) { synthMainHeroId = val; }
 
 export let synthMaterialHeroId = null;
 export function setSynthMaterialHeroId(val) { synthMaterialHeroId = val; }
+
+// Variável para armazenar o avatar selecionado temporariamente antes de criar o jogo
+export let selectedPlayerIcon = '🧙‍♂️';
+export function setSelectedPlayerIcon(icon) { selectedPlayerIcon = icon; }
 
 export function getSaveList() {
     const list = localStorage.getItem('pickMeIdleSavesList');

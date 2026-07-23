@@ -46,20 +46,57 @@ export function toggleFarmLoop(checkbox) {
 }
 
 export function switchTab(tabId) {
-    document.querySelectorAll('.nav-btn').forEach(btn => {
-        if(!btn.classList.contains('play-tower-btn')) btn.classList.remove('active');
+    // Atualiza a aparência de todos os botões do menu lateral para o estado padrão (inativo)
+    document.querySelectorAll('.sidebar-nav .nav-btn').forEach(btn => {
+        btn.style.background = '#161b22';
+        btn.style.borderColor = '#21262d';
+        btn.style.color = '#94a3b8';
     });
+
+    // Destaca visualmente o botão da aba que foi clicada/selecionada
     const targetBtn = document.getElementById('btn-' + tabId);
-    if(targetBtn && !targetBtn.classList.contains('play-tower-btn')) targetBtn.classList.add('active');
+    if(targetBtn && !targetBtn.classList.contains('play-tower-btn')) {
+        targetBtn.style.background = '#1f2937';
+        targetBtn.style.borderColor = 'var(--primary)';
+        targetBtn.style.color = '#ffffff';
+    }
 
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.getElementById(tabId).classList.add('active');
     
-    // As chamadas de renderização vão utilizar o window. para evitar problema circular.
+    // Altera dinamicamente o botão superior do cabeçalho com base na aba ativa
+    const headerBtn = document.getElementById('header-manage-btn');
+    if (headerBtn) {
+        if (tabId === 'tab-lobby') {
+            headerBtn.style.display = 'block';
+            headerBtn.innerHTML = '🎒 Gerenciar Heróis';
+            headerBtn.setAttribute('onclick', "openModal('modal-lobby-manage')");
+        } else if (tabId === 'tab-team') {
+            headerBtn.style.display = 'block';
+            headerBtn.innerHTML = '⚔️ Gerenciar Equipe';
+            headerBtn.setAttribute('onclick', "openModal('modal-team-manage')");
+        } else {
+            headerBtn.style.display = 'none'; // Oculta nas outras abas
+        }
+    }
+
     if(tabId === 'tab-inventory') window.renderInventory();
     if(tabId === 'tab-craft') window.renderCraft();
     if(tabId === 'tab-map') window.renderMap();
-    if(tabId === 'tab-team') window.renderTeam();
-    if(tabId === 'tab-lobby') window.renderVillage();
+    
+    if(tabId === 'tab-team') {
+        window.renderTeam();
+        if(window.initTowerWalk) window.initTowerWalk();
+    } else {
+        if(window.stopTowerWalk) window.stopTowerWalk();
+    }
+
+    if(tabId === 'tab-lobby') {
+        window.renderVillage();
+        if(window.initLobbyWalk) window.initLobbyWalk();
+    } else {
+        if(window.stopLobbyWalk) window.stopLobbyWalk();
+    }
+    
     if(tabId === 'tab-synthesis') window.renderSynthesis();
 }
