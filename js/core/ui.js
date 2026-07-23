@@ -24,18 +24,54 @@ export function notifyLoot(lootCounts, floor) {
     
     let lootTextEntries = [];
     for (let [item, qtd] of Object.entries(lootCounts)) {
-        lootTextEntries.push(`${MAT_ICONS[item] || ''} ${item} x${qtd}`);
+        let icon = MAT_ICONS[item] || (item === 'Ouro' ? '💰' : '📦');
+        lootTextEntries.push(`<div style="display: flex; align-items: center; gap: 8px; padding: 2px 0;"><span>${icon}</span> <span>${qtd}x - ${item}</span></div>`);
     }
     
     const el = document.createElement('div');
     el.className = 'loot-notification';
-    el.innerHTML = `<div style="font-weight:bold; color:var(--primary); margin-bottom:2px;">🎁 Loot Andar ${floor}</div><div>${lootTextEntries.join(' | ')}</div>`;
+    el.innerHTML = `
+        <div style="font-weight:bold; color:var(--primary); margin-bottom:4px; border-bottom: 1px solid #334155; padding-bottom: 3px;">
+            🎁 Loot Andar ${floor}
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+            ${lootTextEntries.join('')}
+        </div>
+    `;
     area.appendChild(el);
     setTimeout(() => el.remove(), 4000);
 }
 
 export function openModal(id) { document.getElementById(id).classList.add('active'); }
 export function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+export function openBattleInventoryModal() {
+    const goldEl = document.getElementById('battle-inv-gold');
+    if (goldEl) goldEl.innerText = `💰 ${game.gold} de Ouro`;
+
+    const matContainer = document.getElementById('battle-inv-materials');
+    if (matContainer) {
+        matContainer.innerHTML = '';
+        const materials = game.inventory.materials || {};
+        const entries = Object.entries(materials);
+
+        if (entries.length === 0) {
+            matContainer.innerHTML = `<span style="color: #94a3b8; font-size: 0.85rem;">Sua mochila de materiais está vazia.</span>`;
+        } else {
+            entries.forEach(([matName, qty]) => {
+                let icon = MAT_ICONS[matName] || '📦';
+                matContainer.innerHTML += `
+                    <div style="display: flex; justify-content: space-between; align-items: center; background: #161b22; padding: 6px 10px; border-radius: 6px; font-size: 0.85rem;">
+                        <span>${icon} ${matName}</span>
+                        <strong style="color: #34d399;">x${qty}</strong>
+                    </div>
+                `;
+            });
+        }
+    }
+    openModal('modal-battle-inventory');
+}
+window.openBattleInventoryModal = openBattleInventoryModal;
 
 export function toggleFarmLoop(checkbox) {
     game.settings.farmLoop = checkbox.checked;
@@ -46,14 +82,12 @@ export function toggleFarmLoop(checkbox) {
 }
 
 export function switchTab(tabId) {
-    // Atualiza a aparência de todos os botões do menu lateral para o estado padrão (inativo)
     document.querySelectorAll('.sidebar-nav .nav-btn').forEach(btn => {
         btn.style.background = '#161b22';
         btn.style.borderColor = '#21262d';
         btn.style.color = '#94a3b8';
     });
 
-    // Destaca visualmente o botão da aba que foi clicada/selecionada
     const targetBtn = document.getElementById('btn-' + tabId);
     if(targetBtn && !targetBtn.classList.contains('play-tower-btn')) {
         targetBtn.style.background = '#1f2937';
@@ -64,7 +98,6 @@ export function switchTab(tabId) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.getElementById(tabId).classList.add('active');
     
-    // Altera dinamicamente o botão superior do cabeçalho com base na aba ativa
     const headerBtn = document.getElementById('header-manage-btn');
     if (headerBtn) {
         if (tabId === 'tab-lobby') {
@@ -76,7 +109,7 @@ export function switchTab(tabId) {
             headerBtn.innerHTML = '⚔️ Gerenciar Equipe';
             headerBtn.setAttribute('onclick', "openModal('modal-team-manage')");
         } else {
-            headerBtn.style.display = 'none'; // Oculta nas outras abas
+            headerBtn.style.display = 'none';
         }
     }
 

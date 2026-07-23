@@ -1,12 +1,12 @@
 export const CLASSES = {
-    Guerreiro: { icon: '🛡️', hp: 1.5, atk: 1.0, mag: 0.5, def: 1.5, res: 1.0, spd: 0.9, acc: 1.0, eva: 0.9, crit: 0.05 },
-    Cavaleiro: { icon: '⚔️', hp: 2.0, atk: 0.8, mag: 0.4, def: 2.0, res: 1.5, spd: 0.8, acc: 1.0, eva: 0.8, crit: 0.05 },
-    Bárbaro: { icon: '🪓', hp: 1.6, atk: 1.8, mag: 0.3, def: 1.0, res: 0.8, spd: 1.1, acc: 1.0, eva: 1.0, crit: 0.2 },
-    Arqueiro: { icon: '🏹', hp: 0.8, atk: 1.4, mag: 0.6, def: 0.8, res: 0.9, spd: 1.5, acc: 1.3, eva: 1.2, crit: 0.15 },
-    Assassino: { icon: '🗡️', hp: 0.7, atk: 1.6, mag: 0.5, def: 0.7, res: 0.7, spd: 1.6, acc: 1.2, eva: 1.5, crit: 0.25 },
-    Mago: { icon: '🧙‍♂️', hp: 0.7, atk: 0.5, mag: 2.0, def: 0.7, res: 1.5, spd: 1.0, acc: 1.1, eva: 1.0, crit: 0.1 },
-    Sacerdote: { icon: '⛪', hp: 1.2, atk: 0.6, mag: 1.3, def: 1.1, res: 1.5, spd: 1.0, acc: 1.0, eva: 1.0, crit: 0.05 },
-    Invocador: { icon: '🔮', hp: 0.9, atk: 0.7, mag: 1.5, def: 0.9, res: 1.2, spd: 1.1, acc: 1.0, eva: 1.1, crit: 0.1 }
+    Guerreiro: { icon: '⚔️', hp: 1.5, atk: 1.0, mag: 0.5, def: 1.5, res: 1.0, spd: 0.9, acc: 1.0, eva: 0.9, crit: 0.05, mpRegen: 10 },
+    Cavaleiro: { icon: '🛡️', hp: 2.0, atk: 0.8, mag: 0.4, def: 2.0, res: 1.5, spd: 0.8, acc: 1.0, eva: 0.8, crit: 0.05, mpRegen: 8 },
+    Bárbaro: { icon: '🪓', hp: 1.6, atk: 1.8, mag: 0.3, def: 1.0, res: 0.8, spd: 1.1, acc: 1.0, eva: 1.0, crit: 0.2, mpRegen: 6 },
+    Arqueiro: { icon: '🏹', hp: 0.8, atk: 1.4, mag: 0.6, def: 0.8, res: 0.9, spd: 1.5, acc: 1.3, eva: 1.2, crit: 0.15, mpRegen: 12 },
+    Assassino: { icon: '🗡️', hp: 0.7, atk: 1.6, mag: 0.5, def: 0.7, res: 0.7, spd: 1.6, acc: 1.2, eva: 1.5, crit: 0.25, mpRegen: 14 },
+    Mago: { icon: '🧙‍♂️', hp: 0.7, atk: 0.5, mag: 2.0, def: 0.7, res: 1.5, spd: 1.0, acc: 1.1, eva: 1.0, crit: 0.1, mpRegen: 20 },
+    Sacerdote: { icon: '⛪', hp: 1.2, atk: 0.6, mag: 1.3, def: 1.1, res: 1.5, spd: 1.0, acc: 1.0, eva: 1.0, crit: 0.05, mpRegen: 18 },
+    Invocador: { icon: '🔮', hp: 0.9, atk: 0.7, mag: 1.5, def: 0.9, res: 1.2, spd: 1.1, acc: 1.0, eva: 1.1, crit: 0.1, mpRegen: 16 }
 };
 
 export const ELEMENTS = ['Fogo', 'Água', 'Natureza', 'Raio', 'Luz', 'Trevas'];
@@ -113,59 +113,59 @@ export const RECIPES = [
 /* ======== SKILLS/HABILIDADES ======== */
 export const CLASS_SKILLS = {
     Guerreiro: [
-        { id: 'gue_1', name: 'Golpe Forte', icon: '⚔️', type: 'damage', target: 'single', power: 1.5, cd: 3, desc: 'Causa 150% de dano a um alvo.' },
-        { id: 'gue_2', name: 'Provocação', icon: '🛡️', type: 'buff', target: 'self', effect: 'taunt', duration: 2, cd: 4, desc: 'Atrai a atenção dos inimigos para si por 2 turnos.' },
-        { id: 'gue_3', name: 'Fenda', icon: '🌪️', type: 'damage', target: 'enemies', power: 0.8, cd: 4, desc: 'Dano moderado em todos os inimigos.' },
-        { id: 'gue_4', name: 'Postura Defensiva', icon: '🛡️', type: 'buff', target: 'self', effect: 'def_up', duration: 3, cd: 4, desc: 'Aumenta a própria DEF por 3 turnos.' },
-        { id: 'gue_5', name: 'Investida', icon: '🏃', type: 'damage', target: 'single', effect: 'delay', power: 1.2, cd: 4, desc: 'Dano e reduz a barra de ação do alvo.' }
+        { id: 'gue_1', name: 'Golpe Forte', icon: '⚔️', type: 'damage', target: 'single', power: 1.5, cd: 3, mpCost: 20, desc: 'Causa 150% de dano a um alvo.' },
+        { id: 'gue_2', name: 'Provocação', icon: '🛡️', type: 'buff', target: 'self', effect: 'taunt', duration: 2, cd: 4, mpCost: 15, desc: 'Atrai a atenção dos inimigos para si por 2 turnos.' },
+        { id: 'gue_3', name: 'Fenda', icon: '🌪️', type: 'damage', target: 'enemies', power: 0.8, cd: 4, mpCost: 25, desc: 'Dano moderado em todos os inimigos.' },
+        { id: 'gue_4', name: 'Postura Defensiva', icon: '🛡️', type: 'buff', target: 'self', effect: 'def_up', duration: 3, cd: 4, mpCost: 20, desc: 'Aumenta a própria DEF por 3 turnos.' },
+        { id: 'gue_5', name: 'Investida', icon: '🏃', type: 'damage', target: 'single', effect: 'delay', power: 1.2, cd: 4, mpCost: 25, desc: 'Dano e reduz a barra de ação do alvo.' }
     ],
     Cavaleiro: [
-        { id: 'cav_1', name: 'Provocação', icon: '🛡️', type: 'buff', target: 'self', effect: 'taunt', duration: 2, cd: 4, desc: 'Força os inimigos a te atacarem por 2 turnos.' },
-        { id: 'cav_2', name: 'Escudo Sagrado', icon: '✨', type: 'buff', target: 'allies', effect: 'def_up', duration: 3, cd: 5, desc: 'Aumenta a DEF da equipe por 3 turnos.' },
-        { id: 'cav_3', name: 'Golpe de Escudo', icon: '💥', type: 'damage', target: 'single', effect: 'delay', power: 1.2, cd: 3, desc: 'Dano e atrasa bastante o alvo.' },
-        { id: 'cav_4', name: 'Falange', icon: '🏰', type: 'buff', target: 'self', effect: 'def_up', duration: 4, cd: 6, desc: 'Aumenta massivamente a própria DEF.' },
-        { id: 'cav_5', name: 'Lâmina da Justiça', icon: '⚔️', type: 'damage', target: 'single', power: 1.6, cd: 4, desc: 'Dano preciso em um alvo único.' }
+        { id: 'cav_1', name: 'Provocação', icon: '🛡️', type: 'buff', target: 'self', effect: 'taunt', duration: 2, cd: 4, mpCost: 15, desc: 'Força os inimigos a te atacarem por 2 turnos.' },
+        { id: 'cav_2', name: 'Escudo Sagrado', icon: '✨', type: 'buff', target: 'allies', effect: 'def_up', duration: 3, cd: 5, mpCost: 35, desc: 'Aumenta a DEF da equipe por 3 turnos.' },
+        { id: 'cav_3', name: 'Golpe de Escudo', icon: '💥', type: 'damage', target: 'single', effect: 'delay', power: 1.2, cd: 3, mpCost: 20, desc: 'Dano e atrasa bastante o alvo.' },
+        { id: 'cav_4', name: 'Falange', icon: '🏰', type: 'buff', target: 'self', effect: 'def_up', duration: 4, cd: 6, mpCost: 30, desc: 'Aumenta massivamente a própria DEF.' },
+        { id: 'cav_5', name: 'Lâmina da Justiça', icon: '⚔️', type: 'damage', target: 'single', power: 1.6, cd: 4, mpCost: 25, desc: 'Dano preciso em um alvo único.' }
     ],
     Bárbaro: [
-        { id: 'bar_1', name: 'Grito Provocante', icon: '🗣️', type: 'buff', target: 'self', effect: 'taunt', duration: 2, cd: 4, desc: 'Provoca os inimigos atraindo ataques.' },
-        { id: 'bar_2', name: 'Golpe Esmagador', icon: '🔨', type: 'damage', target: 'single', power: 1.8, cd: 4, desc: 'Dano pesado em um único alvo.' },
-        { id: 'bar_3', name: 'Ciclone', icon: '🌪️', type: 'damage', target: 'enemies', power: 0.9, cd: 4, desc: 'Dano giratório equilibrado em área.' },
-        { id: 'bar_4', name: 'Sede de Sangue', icon: '🩸', type: 'heal', target: 'self', power: 1.3, cd: 5, desc: 'Cura a si mesmo baseada no ATK.' },
-        { id: 'bar_5', name: 'Grito Intimidador', icon: '🗣️', type: 'debuff', target: 'enemies', effect: 'atk_down', duration: 3, cd: 5, desc: 'Reduz o ATK de todos os inimigos.' }
+        { id: 'bar_1', name: 'Grito Provocante', icon: '🗣️', type: 'buff', target: 'self', effect: 'taunt', duration: 2, cd: 4, mpCost: 15, desc: 'Provoca os inimigos atraindo ataques.' },
+        { id: 'bar_2', name: 'Golpe Esmagador', icon: '🔨', type: 'damage', target: 'single', power: 1.8, cd: 4, mpCost: 30, desc: 'Dano pesado em um único alvo.' },
+        { id: 'bar_3', name: 'Ciclone', icon: '🌪️', type: 'damage', target: 'enemies', power: 0.9, cd: 4, mpCost: 35, desc: 'Dano giratório equilibrado em área.' },
+        { id: 'bar_4', name: 'Sede de Sangue', icon: '🩸', type: 'heal', target: 'self', power: 1.3, cd: 5, mpCost: 25, desc: 'Cura a si mesmo baseada no ATK.' },
+        { id: 'bar_5', name: 'Grito Intimidador', icon: '🗣️', type: 'debuff', target: 'enemies', effect: 'atk_down', duration: 3, cd: 5, mpCost: 30, desc: 'Reduz o ATK de todos os inimigos.' }
     ],
     Arqueiro: [
-        { id: 'arq_1', name: 'Tiro Certeiro', icon: '🎯', type: 'damage', target: 'single', power: 1.6, cd: 3, desc: 'Disparo preciso de alto dano unitário.' },
-        { id: 'arq_2', name: 'Chuva de Flechas', icon: '🌧️', type: 'damage', target: 'enemies', power: 0.75, cd: 4, desc: 'Dispara flechas contra todos os inimigos.' },
-        { id: 'arq_3', name: 'Passo Rápido', icon: '💨', type: 'buff', target: 'self', effect: 'spd_up', duration: 3, cd: 5, desc: 'Aumenta a própria Velocidade.' },
-        { id: 'arq_4', name: 'Tiro Penetrante', icon: '🏹', type: 'damage', target: 'single', effect: 'def_down', power: 1.3, cd: 4, desc: 'Dano e reduz a DEF do alvo.' },
-        { id: 'arq_5', name: 'Emboscada', icon: '🌿', type: 'buff', target: 'allies', effect: 'eva_up', duration: 2, cd: 5, desc: 'Aumenta a Esquiva de toda a equipe.' }
+        { id: 'arq_1', name: 'Tiro Certeiro', icon: '🎯', type: 'damage', target: 'single', power: 1.6, cd: 3, mpCost: 20, desc: 'Disparo preciso de alto dano unitário.' },
+        { id: 'arq_2', name: 'Chuva de Flechas', icon: '🌧️', type: 'damage', target: 'enemies', power: 0.75, cd: 4, mpCost: 35, desc: 'Dispara flechas contra todos os inimigos.' },
+        { id: 'arq_3', name: 'Passo Rápido', icon: '💨', type: 'buff', target: 'self', effect: 'spd_up', duration: 3, cd: 5, mpCost: 25, desc: 'Aumenta a própria Velocidade.' },
+        { id: 'arq_4', name: 'Tiro Penetrante', icon: '🏹', type: 'damage', target: 'single', effect: 'def_down', power: 1.3, cd: 4, mpCost: 25, desc: 'Dano e reduz a DEF do alvo.' },
+        { id: 'arq_5', name: 'Emboscada', icon: '🌿', type: 'buff', target: 'allies', effect: 'eva_up', duration: 2, cd: 5, mpCost: 30, desc: 'Aumenta a Esquiva de toda a equipe.' }
     ],
     Assassino: [
-        { id: 'ass_1', name: 'Apunhalada', icon: '🗡️', type: 'damage', target: 'single', power: 1.8, cd: 3, desc: 'Ataque furtivo de dano crítico elevado.' },
-        { id: 'ass_2', name: 'Veneno Mortal', icon: '🧪', type: 'debuff', target: 'single', effect: 'atk_down', duration: 3, cd: 4, desc: 'Envenena o alvo reduzindo seu ATK.' },
-        { id: 'ass_3', name: 'Desafio Sombrio', icon: '👤', type: 'buff', target: 'self', effect: 'taunt', duration: 2, cd: 4, desc: 'Atrai os olhares dos inimigos das sombras.' },
-        { id: 'ass_4', name: 'Dança das Sombras', icon: '👥', type: 'damage', target: 'enemies', power: 0.8, cd: 5, desc: 'Golpes rápidos em área contra todos.' },
-        { id: 'ass_5', name: 'Corte Rápido', icon: '⚡', type: 'damage', target: 'single', effect: 'delay', power: 1.1, cd: 2, desc: 'Corte ágil com recarga rápida.' }
+        { id: 'ass_1', name: 'Apunhalada', icon: '🗡️', type: 'damage', target: 'single', power: 1.8, cd: 3, mpCost: 25, desc: 'Ataque furtivo de dano crítico elevado.' },
+        { id: 'ass_2', name: 'Veneno Mortal', icon: '🧪', type: 'debuff', target: 'single', effect: 'atk_down', duration: 3, cd: 4, mpCost: 20, desc: 'Envenena o alvo reduzindo seu ATK.' },
+        { id: 'ass_3', name: 'Desafio Sombrio', icon: '👤', type: 'buff', target: 'self', effect: 'taunt', duration: 2, cd: 4, mpCost: 15, desc: 'Atrai os olhares dos inimigos das sombras.' },
+        { id: 'ass_4', name: 'Dança das Sombras', icon: '👥', type: 'damage', target: 'enemies', power: 0.8, cd: 5, mpCost: 35, desc: 'Golpes rápidos em área contra todos.' },
+        { id: 'ass_5', name: 'Corte Rápido', icon: '⚡', type: 'damage', target: 'single', effect: 'delay', power: 1.1, cd: 2, mpCost: 15, desc: 'Corte ágil com recarga rápida.' }
     ],
     Mago: [
-        { id: 'mag_1', name: 'Bola de Fogo', icon: '🔥', type: 'damage', target: 'enemies', power: 0.9, cd: 4, desc: 'Conjura chamas em área moderadas.' },
-        { id: 'mag_2', name: 'Raio de Gelo', icon: '❄️', type: 'damage', target: 'single', effect: 'delay', power: 1.4, cd: 3, desc: 'Dano mágico e atrasa o alvo.' },
-        { id: 'mag_3', name: 'Meteoro', icon: '☄️', type: 'damage', target: 'enemies', power: 1.1, cd: 6, desc: 'Invoca um meteoro de impacto equilibrado em área.' },
-        { id: 'mag_4', name: 'Escudo de Mana', icon: '🔮', type: 'buff', target: 'self', effect: 'def_up', duration: 3, cd: 5, desc: 'Aumenta a própria Defesa.' },
-        { id: 'mag_5', name: 'Fissura Arcana', icon: '✨', type: 'debuff', target: 'enemies', effect: 'def_down', duration: 2, cd: 5, desc: 'Reduz a DEF de todos os inimigos.' }
+        { id: 'mag_1', name: 'Bola de Fogo', icon: '🔥', type: 'damage', target: 'enemies', power: 0.9, cd: 4, mpCost: 35, desc: 'Conjura chamas em área moderadas.' },
+        { id: 'mag_2', name: 'Raio de Gelo', icon: '❄️', type: 'damage', target: 'single', effect: 'delay', power: 1.4, cd: 3, mpCost: 30, desc: 'Dano mágico e atrasa o alvo.' },
+        { id: 'mag_3', name: 'Meteoro', icon: '☄️', type: 'damage', target: 'enemies', power: 1.1, cd: 6, mpCost: 55, desc: 'Invoca um meteoro de impacto equilibrado em área.' },
+        { id: 'mag_4', name: 'Escudo de Mana', icon: '🔮', type: 'buff', target: 'self', effect: 'def_up', duration: 3, cd: 5, mpCost: 25, desc: 'Aumenta a própria Defesa.' },
+        { id: 'mag_5', name: 'Fissura Arcana', icon: '✨', type: 'debuff', target: 'enemies', effect: 'def_down', duration: 2, cd: 5, mpCost: 40, desc: 'Reduz a DEF de todos os inimigos.' }
     ],
     Sacerdote: [
-        { id: 'sac_1', name: 'Cura Maior', icon: '💚', type: 'heal', target: 'ally', power: 1.6, cd: 3, desc: 'Restaura bastante a vida do aliado ferido.' },
-        { id: 'sac_2', name: 'Oração', icon: '🙏', type: 'heal', target: 'allies', power: 0.9, cd: 4, desc: 'Cura equilibrada para toda a equipe.' },
-        { id: 'sac_3', name: 'Bênção Divina', icon: '✨', type: 'buff', target: 'allies', effect: 'def_up', duration: 3, cd: 5, desc: 'Aumenta a DEF de todos os aliados.' },
-        { id: 'sac_4', name: 'Luz Purificadora', icon: '☀️', type: 'damage', target: 'single', power: 1.3, cd: 3, desc: 'Dano sagrado em um inimigo.' },
-        { id: 'sac_5', name: 'Cântico Sagrado', icon: '🎵', type: 'buff', target: 'allies', effect: 'atk_up', duration: 2, cd: 5, desc: 'Concede bônus de ATK para a equipe.' }
+        { id: 'sac_1', name: 'Cura Maior', icon: '💚', type: 'heal', target: 'ally', power: 1.6, cd: 3, mpCost: 30, desc: 'Restaura bastante a vida do aliado ferido.' },
+        { id: 'sac_2', name: 'Oração', icon: '🙏', type: 'heal', target: 'allies', power: 0.9, cd: 4, mpCost: 50, desc: 'Cura equilibrada para toda a equipe.' },
+        { id: 'sac_3', name: 'Bênção Divina', icon: '✨', type: 'buff', target: 'allies', effect: 'def_up', duration: 3, cd: 5, mpCost: 40, desc: 'Aumenta a DEF de todos os aliados.' },
+        { id: 'sac_4', name: 'Luz Purificadora', icon: '☀️', type: 'damage', target: 'single', power: 1.3, cd: 3, mpCost: 25, desc: 'Dano sagrado em um inimigo.' },
+        { id: 'sac_5', name: 'Cântico Sagrado', icon: '🎵', type: 'buff', target: 'allies', effect: 'atk_up', duration: 2, cd: 5, mpCost: 35, desc: 'Concede bônus de ATK para a equipe.' }
     ],
     Invocador: [
-        { id: 'inv_1', name: 'Raio Negro', icon: '🌑', type: 'damage', target: 'single', power: 1.5, cd: 3, desc: 'Disparo de energia sombria em um alvo.' },
-        { id: 'inv_2', name: 'Pacto de Sangue', icon: '🩸', type: 'buff', target: 'allies', effect: 'atk_up', duration: 3, cd: 5, desc: 'Amplia o ATK da equipe através de pacto.' },
-        { id: 'inv_3', name: 'Drenar Vida', icon: '🧛', type: 'heal', target: 'self', power: 1.3, cd: 4, desc: 'Restaura a própria vida sugando energia.' },
-        { id: 'inv_4', name: 'Explosão Caótica', icon: '💥', type: 'damage', target: 'enemies', power: 0.85, cd: 4, desc: 'Ondas de dano caótico em área.' },
-        { id: 'inv_5', name: 'Aura Sombria', icon: '🌫️', type: 'debuff', target: 'enemies', effect: 'atk_down', duration: 3, cd: 6, desc: 'Reduz o ATK de todos os inimigos.' }
+        { id: 'inv_1', name: 'Raio Negro', icon: '🌑', type: 'damage', target: 'single', power: 1.5, cd: 3, mpCost: 25, desc: 'Disparo de energia sombria em um alvo.' },
+        { id: 'inv_2', name: 'Pacto de Sangue', icon: '🩸', type: 'buff', target: 'allies', effect: 'atk_up', duration: 3, cd: 5, mpCost: 40, desc: 'Amplia o ATK da equipe através de pacto.' },
+        { id: 'inv_3', name: 'Drenar Vida', icon: '🧛', type: 'heal', target: 'self', power: 1.3, cd: 4, mpCost: 30, desc: 'Restaura a própria vida sugando energia.' },
+        { id: 'inv_4', name: 'Explosão Caótica', icon: '💥', type: 'damage', target: 'enemies', power: 0.85, cd: 4, mpCost: 45, desc: 'Ondas de dano caótico em área.' },
+        { id: 'inv_5', name: 'Aura Sombria', icon: '🌫️', type: 'debuff', target: 'enemies', effect: 'atk_down', duration: 3, cd: 6, mpCost: 50, desc: 'Reduz o ATK de todos os inimigos.' }
     ]
 };

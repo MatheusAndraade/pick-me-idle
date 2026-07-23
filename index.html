@@ -263,11 +263,16 @@
     <!-- Tela de Batalha -->
     <div id="screen-battle" class="screen">
         <header class="battle-header" style="background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(15, 23, 42, 0.75) 100%); border-bottom: 1px solid rgba(245, 158, 11, 0.2); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);">
-            <div style="display: flex; align-items: center;">
+            <div style="display: flex; align-items: center; gap: 10px;">
                 <label style="display: flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.4); padding: 6px 12px; border-radius: 6px; border: 1px solid #334155; cursor:pointer; font-size: 0.9rem; color: white;">
                     <input type="checkbox" id="battle-loop-checkbox" onchange="toggleFarmLoop(this)" style="width:16px; height:16px; accent-color: var(--primary); cursor: pointer;">
                     <span>Loop</span>
                 </label>
+
+                <!-- BOTÃO DA MOCHILA ADICIONADO AQUI -->
+                <button onclick="window.openBattleInventoryModal()" class="btn-secondary" style="padding: 6px 12px; font-size: 0.85rem; background: #1f2937; border: 1px solid #374151; color: white; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+                    🎒 Mochila
+                </button>
             </div>
             
             <div id="battle-floor-title" style="flex: 1; display: flex; justify-content: center;"></div>
@@ -395,6 +400,27 @@
             <p style="font-size: 0.85rem; color: #94a3b8; text-align: center; margin-bottom: 15px;">Habilidades equipadas são usadas automaticamente na Torre de acordo com suas condições.</p>
             <div id="modal-skill-list" class="modal-list"></div>
             <button onclick="closeModal('modal-skill-equip')" class="btn-secondary" style="margin-top: 15px; width: 100%;">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- MODAL DA MOCHILA DENTRO DA TORRE ADICIONADO AQUI -->
+    <div id="modal-battle-inventory" class="modal">
+        <div class="modal-content" style="background: #161b22; border: 1px solid #30363d; border-radius: 12px; width: 350px; padding: 20px; color: white;">
+            <h3 style="margin-bottom: 15px; color: var(--primary); display: flex; align-items: center; gap: 8px;">🎒 Mochila de Recursos</h3>
+            
+            <div style="background: #0f1115; border: 1px solid #21262d; border-radius: 8px; padding: 12px; margin-bottom: 15px;">
+                <div style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 6px;">Dinheiro Atual:</div>
+                <div id="battle-inv-gold" style="font-size: 1.1rem; font-weight: bold; color: #fbbf24;">💰 0 de Ouro</div>
+            </div>
+
+            <div style="background: #0f1115; border: 1px solid #21262d; border-radius: 8px; padding: 12px; margin-bottom: 20px;">
+                <div style="font-size: 0.9rem; color: #94a3b8; margin-bottom: 8px;">Materiais Coletados:</div>
+                <div id="battle-inv-materials" style="display: flex; flex-direction: column; gap: 6px; max-height: 200px; overflow-y: auto;">
+                    <!-- Preenchido via JavaScript -->
+                </div>
+            </div>
+
+            <button onclick="window.closeModal('modal-battle-inventory')" class="btn-primary" style="width: 100%; padding: 10px; cursor: pointer;">Fechar</button>
         </div>
     </div>
 

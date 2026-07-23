@@ -4,6 +4,46 @@ import { CLASSES, ELEMENTS, ELEMENT_ADVANTAGES, MONSTER_ICONS, RARITIES, MAT_ICO
 import { notify, notifyLoot, openModal, closeModal } from '../core/ui.js';
 import { getTotalStats, getAllHeroes, getRandomInt } from './heroes.js';
 
+// --- SISTEMA DE WEB WORKER (RODA EM SEGUNDO PLANO SEM PAUSAR) ---
+let battleWorker = null;
+
+function initWorker() {
+    if (battleWorker) return;
+    const code = `
+        let intervalId = null;
+        self.onmessage = function(e) {
+            if (e.data.cmd === 'start') {
+                if (intervalId) clearInterval(intervalId);
+                intervalId = setInterval(() => self.postMessage('tick'), e.data.tickRate);
+            } else if (e.data.cmd === 'stop') {
+                if (intervalId) clearInterval(intervalId);
+                intervalId = null;
+            }
+        };
+    `;
+    const blob = new Blob([code], { type: 'application/javascript' });
+    battleWorker = new Worker(URL.createObjectURL(blob));
+    battleWorker.onmessage = function(e) {
+        if (e.data === 'tick' && battleState.active) {
+            battleTick();
+        }
+    };
+}
+
+function startTimer() {
+    initWorker();
+    let tick = battleState.tickRate || 100;
+    battleWorker.postMessage({ cmd: 'start', tickRate: tick });
+    setBattleInterval('worker_running'); // Mantém o restante do jogo sabendo que está rodando
+}
+
+function stopTimer() {
+    if (battleWorker) battleWorker.postMessage({ cmd: 'stop' });
+    if (battleInterval && typeof battleInterval !== 'string') clearInterval(battleInterval);
+    setBattleInterval(null);
+}
+// ---------------------------------------------------------------
+
 export function startTowerLevel(floor) {
     if (game.heroes.length === 0) return notify("Sua equipe está vazia! Convoque heróis do Lobby.");
     
@@ -70,6 +110,8 @@ function createMonsterEntity(region, floor, teamAvgStars, maxAllowedStars, isBos
         },
         maxHp: finalHp, 
         currentHp: finalHp, 
+        maxMp: 60,         // Adicionado MP pros monstros não bugar barra
+        currentMp: 60,
         actionGauge: getRandomInt(0, 30), 
         isDead: false, 
         buffs: [] 
@@ -77,7 +119,31 @@ function createMonsterEntity(region, floor, teamAvgStars, maxAllowedStars, isBos
 }
 
 export function setupBattle() {
-    if (battleInterval) { clearInterval(battleInterval); setBattleInterval(null); }
+    stopTimer(); // Limpa e para completamente o timer usando a nova lógica
+
+    const battleScreen = document.getElementById('screen-battle');
+    if (battleScreen) {
+        if (battleState.floor >= 1 && battleState.floor <= 10) {
+            const battleArena = battleScreen.querySelector('.battle-arena');
+            if (battleArena) {
+                battleArena.style.backgroundImage = "linear-gradient(rgba(15, 17, 21, 0.5), rgba(15, 17, 21, 0.7)), url('img/campos_florestas.png')";
+                battleArena.style.backgroundSize = "cover";
+                battleArena.style.backgroundPosition = "center";
+                battleArena.style.backgroundRepeat = "no-repeat";
+            }
+        }
+
+        const battleHeader = battleScreen.querySelector('.battle-header');
+        if (battleHeader) {
+            const buttons = battleHeader.querySelectorAll('button');
+            buttons.forEach(btn => {
+                if (btn.innerText.includes('Mochila') || btn.innerHTML.includes('Mochila') || btn.innerHTML.includes('fa-backpack')) {
+                    btn.classList.add('battle-backpack-btn');
+                    battleScreen.appendChild(btn);
+                }
+            });
+        }
+    }
 
     const region = getRegionData(battleState.floor);
     
@@ -110,7 +176,7 @@ export function setupBattle() {
     
     renderBattleField();
     battleState.active = true;
-    setBattleInterval(setInterval(battleTick, battleState.tickRate));
+    startTimer(); // Inicia usando a Thread em segundo plano
 }
 
 function updateBattleTitle(region, teamAvgStars) {
@@ -176,15 +242,12 @@ export function renderBattleField() {
                 <div class="bar-fill mp-fill" id="mp-${ent.uid}" style="width: ${(ent.currentMp/ent.maxMp)*100}%; height: 100%; background: #38bdf8; border-radius: 3px;"></div>
             </div>` : '';
 
-        // Carregamento simétrico para os dois lados ao mesmo tempo (com transição fluida e espessura fina de 2px)
         return `
             <div id="ent-${ent.uid}" class="entity-box ${ent.isDead ? 'dead' : ''} ${ent.isBoss ? 'boss-entity' : ''}" style="position: relative; border: 2px solid #334155; box-shadow: none;">
                 <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; border-radius: 12px;" viewBox="0 0 100 150" preserveAspectRatio="none">
-                    <!-- Lado Esquerdo -->
                     <path d="M 50 150 L 12 150 A 12 12 0 0 1 0 138 L 0 12 A 12 12 0 0 1 12 0 L 50 0" fill="none" stroke="#1e293b" stroke-width="2" opacity="0.3"/>
                     <path id="act-left-${ent.uid}" d="M 50 150 L 12 150 A 12 12 0 0 1 0 138 L 0 12 A 12 12 0 0 1 12 0 L 50 0" fill="none" stroke="${isEnemy ? 'var(--danger)' : '#fbbf24'}" stroke-width="2" stroke-dasharray="240" stroke-dashoffset="240" style="transition: stroke-dashoffset 0.05s linear;" />
 
-                    <!-- Lado Direito -->
                     <path d="M 50 150 L 88 150 A 12 12 0 0 0 100 138 L 100 12 A 12 12 0 0 0 88 0 L 50 0" fill="none" stroke="#1e293b" stroke-width="2" opacity="0.3"/>
                     <path id="act-right-${ent.uid}" d="M 50 150 L 88 150 A 12 12 0 0 0 100 138 L 100 12 A 12 12 0 0 0 88 0 L 50 0" fill="none" stroke="${isEnemy ? 'var(--danger)' : '#fbbf24'}" stroke-width="2" stroke-dasharray="240" stroke-dashoffset="240" style="transition: stroke-dashoffset 0.05s linear;" />
                 </svg>
@@ -266,9 +329,19 @@ function processTurnStart(actor) {
         actor.buffs.forEach(b => b.duration--);
         actor.buffs = actor.buffs.filter(b => b.duration > 0);
     }
-    if (!actor.uid.startsWith('m') && actor.currentMp < actor.maxMp) {
-        actor.currentMp = Math.min(actor.maxMp, actor.currentMp + Math.floor(actor.maxMp * 0.15));
+    
+    // Novo Sistema Inteligente de Recuperação Passiva de MP por classe
+    if (actor.currentMp < actor.maxMp) {
+        let regen = 10; // Padrão
+        if (!actor.uid.startsWith('m')) {
+            let classInfo = CLASSES[actor.class];
+            if (classInfo && classInfo.mpRegen) {
+                regen = classInfo.mpRegen; 
+            }
+        }
+        actor.currentMp = Math.min(actor.maxMp, actor.currentMp + regen);
     }
+    
     updateEntityBars(actor);
 }
 
@@ -277,7 +350,8 @@ function selectSkillAI(actor, allies) {
     let availableSkills = actor.selectedSkills.map(sId => {
         if (!sId) return null;
         let skill = CLASS_SKILLS[actor.class].find(s => s.id === sId);
-        let cost = skill.mpCost || 15;
+        let cost = skill ? (skill.mpCost || 15) : 15;
+        // Analisa se tem MP suficiente para usar a habilidade e CD pronto
         if (skill && (actor.cooldowns[sId] || 0) === 0 && actor.currentMp >= cost) return skill;
         return null;
     }).filter(s => s !== null);
@@ -307,7 +381,7 @@ export function takeAction(actor) {
     let effActorStats = getEffectiveStats(actor);
 
     if (chosenSkill) {
-        let cost = chosenSkill.mpCost || 15;
+        let cost = chosenSkill.mpCost || 15; // Desconta o MP
         actor.currentMp -= cost; 
         updateEntityBars(actor);
         executeSkill(actor, effActorStats, chosenSkill, aliveAllies, aliveEnemies);
@@ -315,6 +389,7 @@ export function takeAction(actor) {
         return;
     }
 
+    // Se chegou aqui, ou acabou o MP, ou os CDs estão ativos: Vai usar Ataque Básico/Cura Básica
     let target = aliveEnemies[0];
     let isHeal = false;
     let taunters = aliveEnemies.filter(e => e.buffs.some(b => b.type === 'taunt'));
@@ -364,6 +439,7 @@ function executeSkill(actor, effStats, skill, allies, enemies) {
             applyDamage(actor, effStats, t, power, isHero);
             if(skill.effect === 'delay' && !t.isDead) t.actionGauge = Math.max(0, t.actionGauge - 30);
             if(skill.effect === 'def_down' && !t.isDead) t.buffs.push({ type: 'def_down', duration: 3 });
+            if(skill.effect === 'atk_down' && !t.isDead) t.buffs.push({ type: 'atk_down', duration: 3 });
         } 
         else if (skill.type === 'heal') applyHeal(actor, t, Math.floor((effStats.mag || effStats.atk) * power * 1.5));
         else if (skill.type === 'buff') t.buffs.push({ type: skill.effect, duration: skill.duration || 3 });
@@ -388,8 +464,19 @@ function applyDamage(actor, effActorStats, target, multiplier, isHero) {
 
     let isCrit = Math.random() * 100 < (effActorStats.critRate || 10); 
     
-    let atkPower = effActorStats.atk || 10;
-    let targetDef = effTargetStats.def || 1;
+    // Novo Sistema: Diferenciação de Atributos (Físico vs Mágico)
+    let isMagicClass = false;
+    if (isHero) {
+        // Classes de Dano Mágico
+        isMagicClass = ['Mago', 'Sacerdote', 'Invocador'].includes(actor.class);
+    } else {
+        // Monstros
+        isMagicClass = ['Curandeiro'].includes(actor.ai);
+    }
+
+    // Ataques Mágicos usam MAG(atacante) contra RES(alvo). Físicos usam ATK contra DEF.
+    let atkPower = isMagicClass ? (effActorStats.mag || 10) : (effActorStats.atk || 10);
+    let targetDef = isMagicClass ? (effTargetStats.res || 1) : (effTargetStats.def || 1);
 
     let mitigation = targetDef / (targetDef + 60);
     let rawDmg = (atkPower * multiplier) * (1 - mitigation);
@@ -478,7 +565,7 @@ export function checkBattleEnd() {
             return;
         } else {
             battleState.active = false; 
-            if (battleInterval) { clearInterval(battleInterval); setBattleInterval(null); }
+            stopTimer(); // Limpa e para completamente o timer
             processPermadeath(); 
             winBattle(); 
             return;
@@ -487,7 +574,7 @@ export function checkBattleEnd() {
 
     if (!battleState.heroes.some(h => !h.isDead)) { 
         battleState.active = false; 
-        if (battleInterval) { clearInterval(battleInterval); setBattleInterval(null); }
+        stopTimer(); // Limpa e para completamente o timer
         processPermadeath(); 
         checkGameOverCondition();
     }
@@ -546,22 +633,31 @@ export function winBattle() {
         }
     });
 
-    let lootCounts = { 'Ouro': goldEarned }; const matPool = ['Minério', 'Minério', 'Madeira', 'Couro', 'Tecido'];
+    let lootCounts = { 'Ouro': goldEarned }; 
+    const basicMatPool = ['Minério', 'Madeira', 'Couro', 'Tecido'];
     
-    let totalLootRolls = battleState.maxWaves * 3;
+    let totalLootRolls = battleState.maxWaves * 2;
     for(let i = 0; i < totalLootRolls; i++) { 
-        if(Math.random() > 0.4) { 
-            let item = matPool[getRandomInt(0, matPool.length-1)]; 
-            game.inventory.materials[item]++; 
+        if(Math.random() > 0.35) { 
+            let item = basicMatPool[getRandomInt(0, basicMatPool.length - 1)]; 
+            game.inventory.materials[item] = (game.inventory.materials[item] || 0) + 1; 
             lootCounts[item] = (lootCounts[item] || 0) + 1; 
         } 
     }
     
-    game.inventory.materials['Cristal']++; 
-    lootCounts['Cristal'] = (lootCounts['Cristal'] || 0) + 1; 
-    if(Math.random() < 0.35) { 
-        game.inventory.materials['Essência de Dragão'] = (game.inventory.materials['Essência de Dragão'] || 0) + 1; 
-        lootCounts['Essência de Dragão'] = 1; 
+    if (battleState.floor >= 5) {
+        let crystalChance = Math.min(0.8, 0.2 + (battleState.floor * 0.03));
+        if (Math.random() < crystalChance) {
+            game.inventory.materials['Cristal'] = (game.inventory.materials['Cristal'] || 0) + 1; 
+            lootCounts['Cristal'] = (lootCounts['Cristal'] || 0) + 1; 
+        }
+    }
+
+    const isBossFloor = battleState.floor % 10 === 0;
+    if (isBossFloor || (battleState.floor >= 15 && Math.random() < 0.12)) {
+        let essenceQty = isBossFloor ? (Math.floor(battleState.floor / 10)) : 1;
+        game.inventory.materials['Essência de Dragão'] = (game.inventory.materials['Essência de Dragão'] || 0) + essenceQty; 
+        lootCounts['Essência de Dragão'] = essenceQty; 
     }
 
     if (!battleState.runLoot) battleState.runLoot = {};
@@ -628,7 +724,7 @@ export function nextFloor() {
 
 export function fleeBattle() { 
     battleState.active = false; 
-    if (battleInterval) { clearInterval(battleInterval); setBattleInterval(null); }
+    stopTimer(); // Limpa e para completamente o timer
     closeModal('modal-victory'); 
     game.pendingLevelUps = {}; game.sessionStartStats = {}; battleState.runLoot = {};
     window.updateUI(); 

@@ -245,7 +245,6 @@ button { border: none; cursor: pointer; border-radius: 6px; font-weight: 600; tr
 .synth-lobby-info h4 { font-size: 0.95rem; color: white; margin-bottom: 2px; }
 .synth-lobby-info span { font-size: 0.8rem; color: #94a3b8; }
 
-/* ======== CARD DE HERÓI ORGANIZADO, LIMPO E PADRONIZADO ======== */
 .hero-card { 
     background: linear-gradient(145deg, #181c24 0%, #12151b 100%); 
     border: 1px solid #334155; 
@@ -340,7 +339,6 @@ button { border: none; cursor: pointer; border-radius: 6px; font-weight: 600; tr
 .equip-slot.filled { border: 1px solid var(--primary); background: rgba(245, 158, 11, 0.12); color: var(--primary); font-weight: bold; border-style: solid; }
 .equip-slot.filled:hover { border-color: var(--danger); background: rgba(239, 68, 68, 0.12); color: var(--danger); }
 
-/* Bloco de Atributos com Espaçamento Limpo e Organizado (Grid em colunas para evitar o bug de textos colados como SPD9) */
 .hero-stats { 
     font-size: 0.85rem; 
     background: #0f1115; 
@@ -415,14 +413,16 @@ button { border: none; cursor: pointer; border-radius: 6px; font-weight: 600; tr
 @keyframes nodePulse { 0% { box-shadow: 0 0 10px var(--primary); } 50% { box-shadow: 0 0 30px var(--primary); } 100% { box-shadow: 0 0 10px var(--primary); } }
 
 #screen-battle { flex-direction: column; position: relative;}
-.battle-header { padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; background: rgba(15, 17, 21, 0.9); border-bottom: 2px solid var(--primary); z-index: 5; }
+.battle-header { padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; background: rgba(15, 17, 21, 0.9); border-bottom: 2px solid var(--primary); z-index: 5; position: relative; }
+#battle-floor-title { position: absolute; left: 50%; transform: translateX(-50%); text-align: center; }
+
 .battle-arena { display: flex; justify-content: space-between; align-items: center; flex: 1; padding: 30px 5vw; background: radial-gradient(circle at bottom, #1e293b 0%, #020617 100%); position: relative; overflow: hidden; }
 .arena-floor-grid { position: absolute; bottom: -50%; left: 0; width: 100%; height: 150%; background-image: linear-gradient(rgba(51, 65, 85, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(51, 65, 85, 0.3) 1px, transparent 1px); background-size: 50px 50px; transform: perspective(600px) rotateX(70deg); z-index: 0; pointer-events: none; }
 
 .battle-side { display: flex; flex-wrap: wrap; gap: 15px; width: 45%; align-content: center; justify-content: center; z-index: 2; }
 .hero-side { flex-direction: row-reverse; } 
 .enemy-side { flex-direction: row; } 
-.battle-vs { font-size: 5rem; opacity: 0.1; z-index: 1; text-shadow: 0 0 20px white; }
+.battle-vs { font-size: 5rem; opacity: 0.8; z-index: 1; text-shadow: 0 0 20px white; color: #e2e8f0; }
 
 .entity-box { background: rgba(15, 23, 42, 0.9); border: 2px solid #334155; border-radius: 16px; padding: 12px; width: 110px; display: flex; flex-direction: column; align-items: center; transition: 0.15s transform, 0.2s box-shadow; box-shadow: 0 8px 15px rgba(0,0,0,0.5); position: relative; }
 .hero-side .entity-box:last-child { border-color: var(--primary); box-shadow: 0 0 15px rgba(245, 158, 11, 0.3); }
@@ -502,3 +502,11 @@ button { border: none; cursor: pointer; border-radius: 6px; font-weight: 600; tr
 
 @keyframes slideInRight { from { transform: translateX(50px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
+
+/* Botão da mochila posicionado no canto inferior esquerdo */
+.battle-backpack-btn {
+    position: absolute !important;
+    bottom: 20px !important;
+    left: 20px !important;
+    z-index: 100 !important;
+}
