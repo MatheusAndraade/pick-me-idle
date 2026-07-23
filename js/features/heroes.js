@@ -197,14 +197,19 @@ export function renderVillage() {
                     <div class="hero-level-badge">Nível ${h.level}</div>
                     
                     <div class="hero-stats">
-                        <p><span>❤️ HP</span> <span>${total.hp}</span></p>
-                        <p><span>💙 MP</span> <span>${total.mp}</span></p>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 6px; border-bottom: 1px solid #1e293b;">
+                            <span style="color: #f43f5e; font-weight: bold; font-size: 0.9rem;">❤️ HP</span>
+                            <strong style="color: #34d399; font-size: 0.95rem;">${total.hp}</strong>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 6px; border-bottom: 1px solid #1e293b;">
+                            <span style="color: #38bdf8; font-weight: bold; font-size: 0.9rem;">💙 MP</span>
+                            <strong style="color: #60a5fa; font-size: 0.95rem;">${total.mp}</strong>
+                        </div>
                         <p><span>⚔️ ATK</span> <span>${total.atk}</span></p>
                         <p><span>🔮 MAG</span> <span>${total.mag}</span></p>
                         <p><span>🛡️ DEF</span> <span>${total.def}</span></p>
                         <p><span>✨ RES</span> <span>${total.res}</span></p>
                         <p><span>⚡ SPD</span> <span>${total.spd}</span></p>
-                        <p><span>🎯 ACC/EVA</span> <span>${total.acc}/${total.eva}</span></p>
                     </div>
 
                     <div style="display: flex; gap: 8px; margin-top: auto;">
@@ -441,7 +446,6 @@ export function renderTeam() {
         const heroClassSkills = CLASS_SKILLS[h.class] || [];
         
         let skillsHTML = h.selectedSkills.map((sId, slotIdx) => {
-            // TRAVA DO SLOT 2 A PARTIR DO NÍVEL 10
             if (slotIdx === 1 && h.level < 10) {
                 return `<div class="skill-slot locked" style="opacity:0.5; background:#090a0d; border:1px dashed #475569; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:4px;"><span style="font-size:0.7rem; color:#94a3b8; font-weight:bold;">🔒 Nível 10</span></div>`;
             }
@@ -478,14 +482,19 @@ export function renderTeam() {
                 <div class="hero-skills">${skillsHTML}</div>
 
                 <div class="hero-stats">
-                    <p><span>❤️ HP</span> <span>${total.hp}</span></p>
-                    <p><span>💙 MP</span> <span>${total.mp}</span></p>
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 6px; border-bottom: 1px solid #1e293b;">
+                        <span style="color: #f43f5e; font-weight: bold; font-size: 0.9rem;">❤️ HP</span>
+                        <strong style="color: #34d399; font-size: 0.95rem;">${total.hp}</strong>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 6px; border-bottom: 1px solid #1e293b;">
+                        <span style="color: #38bdf8; font-weight: bold; font-size: 0.9rem;">💙 MP</span>
+                        <strong style="color: #60a5fa; font-size: 0.95rem;">${total.mp}</strong>
+                    </div>
                     <p><span>⚔️ ATK</span> <span>${total.atk}</span></p>
                     <p><span>🔮 MAG</span> <span>${total.mag}</span></p>
                     <p><span>🛡️ DEF</span> <span>${total.def}</span></p>
                     <p><span>✨ RES</span> <span>${total.res}</span></p>
                     <p><span>⚡ SPD</span> <span>${total.spd}</span></p>
-                    <p><span>🎯 ACC/EVA</span> <span>${total.acc}/${total.eva}</span></p>
                 </div>
                 
                 <div class="hero-equips">

@@ -105,7 +105,7 @@
         </aside>
 
         <!-- Conteúdo Principal -->
-        <main class="main-content" style="flex: 1; display: flex; flex-direction: column; height: 100vh; overflow: hidden; background: #0b0e14;">
+        <main class="main-content" style="flex: 1; display: flex; flex-direction: column; height: 100vh; overflow: hidden; background: #0f1117;">
             <!-- Top Bar com Saudação (Fade-out mantendo espaço estrutural) e Botão Melhorado -->
             <header style="height: 60px; background: #0f1117; border-bottom: 1px solid #1e293b; display: flex; align-items: center; justify-content: space-between; padding: 0 24px;">
                 <div id="welcome-banner" style="display: flex; align-items: center; gap: 8px; color: white; font-size: 0.95rem; font-weight: 500; transition: opacity 1.5s ease, visibility 1.5s ease; opacity: 1; visibility: visible;">
@@ -118,27 +118,27 @@
                 </div>
             </header>
 
-            <!-- Área Dinâmica das Abas Sem Vãos (Preenchimento Total) -->
-            <div style="flex: 1; overflow: hidden; position: relative; display: flex; flex-direction: column; background: #0b0e14;">
-                <div style="flex: 1; position: relative; overflow: hidden; display: flex; align-items: stretch; justify-content: stretch; background: #0b0e14;">
+            <!-- Área Dinâmica das Abas com Fundo Unificado (#0f1117) -->
+            <div style="flex: 1; overflow: hidden; position: relative; display: flex; flex-direction: column; background: #0f1117; padding: 0; margin: 0;">
+                <div style="flex: 1; position: relative; overflow: hidden; display: flex; align-items: stretch; justify-content: stretch; background: #0f1117; padding: 0; margin: 0;">
                     
-                    <!-- Aba Lobby preenchendo 100% da área sem sobras -->
-                    <section id="tab-lobby" class="tab active fullscreen-tab" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #0b0e14;">
-                        <div class="interactive-wrapper" style="width: 100%; height: 100%; position: relative; background: #0b0e14;">
-                            <img src="img/lobby.png" class="interactive-bg-img" alt="Lobby da Cidade" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-                            <div id="lobby-walk-area" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
+                    <!-- Aba Lobby preenchendo 100% da área sem sobras nem vãos -->
+                    <section id="tab-lobby" class="tab active fullscreen-tab" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #0f1117; padding: 0 !important; margin: 0 !important; border: none !important; border-radius: 0 !important;">
+                        <div class="interactive-wrapper" style="width: 100%; height: 100%; position: relative; background: #0f1117; margin: 0 !important; padding: 0 !important; border-radius: 0 !important;">
+                            <img src="img/lobby.png" class="interactive-bg-img" alt="Lobby da Cidade" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 0 !important; margin: 0 !important; padding: 0 !important;">
+                            <div id="lobby-walk-area" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; margin: 0; padding: 0;"></div>
                         </div>
                     </section>
 
-                    <!-- Aba Equipe preenchendo 100% da área sem sobras -->
-                    <section id="tab-team" class="tab fullscreen-tab" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #0b0e14;">
-                        <div class="interactive-wrapper" style="width: 100%; height: 100%; position: relative; background: #0b0e14;">
-                            <img src="img/torre.png" class="interactive-bg-img" alt="Torre de Batalha" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-                            <div id="tower-walk-area" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></div>
+                    <!-- Aba Equipe preenchendo 100% da área sem sobras nem vãos -->
+                    <section id="tab-team" class="tab fullscreen-tab" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #0f1117; padding: 0 !important; margin: 0 !important; border: none !important; border-radius: 0 !important;">
+                        <div class="interactive-wrapper" style="width: 100%; height: 100%; position: relative; background: #0f1117; margin: 0 !important; padding: 0 !important; border-radius: 0 !important;">
+                            <img src="img/torre.png" class="interactive-bg-img" alt="Torre de Batalha" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 0 !important; margin: 0 !important; padding: 0 !important;">
+                            <div id="tower-walk-area" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; margin: 0; padding: 0;"></div>
                         </div>
                     </section>
 
-                    <section id="tab-synthesis" class="tab" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #0b0e14; padding: 20px; overflow-y: auto;">
+                    <section id="tab-synthesis" class="tab" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #0f1117; padding: 20px; overflow-y: auto;">
                         <div class="tab-header">
                             <h2>✨ Altar de Síntese</h2>
                             <p>Use o auto-preencher para selecionar heróis compatíveis ou clique manualmente nos heróis do Lobby.</p>
@@ -177,7 +177,7 @@
                         </div>
                     </section>
 
-                    <section id="tab-gacha" class="tab" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #0b0e14; padding: 20px; overflow-y: auto;">
+                    <section id="tab-gacha" class="tab" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #0f1117; padding: 20px; overflow-y: auto;">
                         <div class="tab-header">
                             <h2>Altar de Invocação</h2>
                             <p>Novos heróis convocados vão direto para o Lobby se a equipe estiver cheia.</p>
@@ -205,7 +205,7 @@
                         </div>
                     </section>
 
-                    <section id="tab-inventory" class="tab" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #0b0e14; padding: 20px; overflow-y: auto;">
+                    <section id="tab-inventory" class="tab" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #0f1117; padding: 20px; overflow-y: auto;">
                         <div class="tab-header">
                             <h2>Mochila</h2>
                             <p>Seus itens e materiais guardados.</p>
@@ -216,7 +216,7 @@
                         </div>
                     </section>
 
-                    <section id="tab-craft" class="tab" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #0b0e14; padding: 20px; overflow-y: auto;">
+                    <section id="tab-craft" class="tab" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #0f1117; padding: 20px; overflow-y: auto;">
                         <div class="tab-header">
                             <h2>Forja de Equipamentos</h2>
                             <p>Crie armas e armaduras poderosas usando os materiais da mochila.</p>
@@ -242,7 +242,7 @@
                         <div id="craft-container" class="grid-container"></div>
                     </section>
 
-                    <section id="tab-map" class="tab" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #0b0e14; padding: 20px; overflow-y: auto;">
+                    <section id="tab-map" class="tab" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #0f1117; padding: 20px; overflow-y: auto;">
                         <div class="tab-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                             <div>
                                 <h2>Mapa da Torre</h2>
@@ -255,41 +255,6 @@
                         </div>
                         <div id="map-container" class="map-trail-container"></div>
                     </section>
-                </div>
-
-                <!-- Barra Inferior de Atalhos -->
-                <div class="bottom-shortcuts-bar" style="background: #0f1117; border-top: 1px solid #1e293b; padding: 12px 24px; display: grid; grid-template-columns: repeat(3, 1fr) 1.5fr; gap: 15px; align-items: center; z-index: 10;">
-                    <div style="background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; gap: 10px;">
-                        <span style="font-size: 1.3rem;">📅</span>
-                        <div>
-                            <div style="color: white; font-weight: bold; font-size: 0.85rem;">Eventos Ativos</div>
-                            <div style="color: #94a3b8; font-size: 0.7rem;">2 eventos rolando!</div>
-                        </div>
-                    </div>
-                    <div style="background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; gap: 10px;">
-                        <span style="font-size: 1.3rem;">🎁</span>
-                        <div>
-                            <div style="color: white; font-weight: bold; font-size: 0.85rem;">Recompensa Diária</div>
-                            <div style="color: #94a3b8; font-size: 0.7rem;">Resgate sua recompensa!</div>
-                        </div>
-                    </div>
-                    <div style="background: #161b22; border: 1px solid #21262d; border-radius: 8px; padding: 10px 14px; display: flex; align-items: center; gap: 10px;">
-                        <span style="font-size: 1.3rem;">📜</span>
-                        <div>
-                            <div style="color: white; font-weight: bold; font-size: 0.85rem;">Missões</div>
-                            <div style="color: #94a3b8; font-size: 0.7rem;">3/5 concluídas</div>
-                        </div>
-                    </div>
-                    <div style="background: linear-gradient(135deg, #161b22 0%, #1f2937 100%); border: 1px solid #334155; border-radius: 8px; padding: 8px 14px; display: flex; justify-content: space-between; align-items: center;">
-                        <div>
-                            <div style="color: #fbbf24; font-weight: bold; font-size: 0.85rem;">Pacote do Aventureiro</div>
-                            <div style="color: #94a3b8; font-size: 0.65rem;">Itens especiais esperando por você!</div>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 1.4rem;">👑</span>
-                            <span style="color: #64748b; font-size: 0.9rem;">›</span>
-                        </div>
-                    </div>
                 </div>
             </div>
         </main>
