@@ -360,25 +360,59 @@
         </div>
     </div>
 
-    <!-- Modal Novo Jogo com Seletor de Ícones Funcional -->
+    <!-- Modal Novo Jogo com Seletor de Ícones Customizado -->
     <div id="modal-new-game" class="modal">
-        <div class="modal-content" style="text-align: center; max-width: 380px;">
-            <h3 style="color: white; margin-bottom: 5px;">Criar Novo Jogo</h3>
-            <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 15px;">Escolha seu ícone e digite seu nome de aventureiro:</p>
+        <div class="custom-new-game-modal">
+            <h3 class="custom-modal-title">CRIAR NOVO JOGO</h3>
+            <p class="custom-modal-subtitle">Escolha seu ícone e digite o nome de aventureiro:</p>
             
-            <div style="display: flex; justify-content: center; gap: 10px; margin-bottom: 20px;" id="avatar-selector">
-                <div class="avatar-option active" onclick="window.selectAvatar('🧙‍♂️', this)" style="width: 42px; height: 42px; border-radius: 50%; background: #161b22; border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; cursor: pointer; transition: 0.2s;">🧙‍♂️</div>
-                <div class="avatar-option" onclick="window.selectAvatar('⚔️', this)" style="width: 42px; height: 42px; border-radius: 50%; background: #161b22; border: 2px solid #334155; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; transition: 0.2s;">⚔️</div>
-                <div class="avatar-option" onclick="window.selectAvatar('🧝‍♀️', this)" style="width: 42px; height: 42px; border-radius: 50%; background: #161b22; border: 2px solid #334155; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; cursor: pointer; transition: 0.2s;">🧝‍♀️</div>
-                <div class="avatar-option" onclick="window.selectAvatar('🛡️', this)" style="width: 42px; height: 42px; border-radius: 50%; background: #161b22; border: 2px solid #334155; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; transition: 0.2s;">🛡️</div>
-                <div class="avatar-option" onclick="window.selectAvatar('🐉', this)" style="width: 42px; height: 42px; border-radius: 50%; background: #161b22; border: 2px solid #334155; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; cursor: pointer; transition: 0.2s;">🐉</div>
+            <img src="img/divider.png" alt="Divisor" class="custom-modal-divider">
+
+            <div class="custom-section-label">
+                <span>—</span> ESCOLHA SEU ÍCONE <span>—</span>
             </div>
 
-            <input type="text" id="new-save-name" placeholder="Ex: Aventureiro" style="width: 100%; padding: 12px; background: #0f1115; border: 1px solid #334155; color: white; border-radius: 6px; font-size: 1rem; margin-bottom: 20px; text-align: center;">
+            <!-- Seletor de Avatares com as imagens customizadas -->
+            <div class="custom-avatar-selector" id="avatar-selector">
+                <div class="custom-avatar-option active" data-avatar="avatar_wizard" onclick="window.selectAvatar('avatar_wizard', this)">
+                    <img src="img/avatar_wizard.png" alt="Mago">
+                    <div class="selection-ring"></div>
+                </div>
+                <div class="custom-avatar-option" data-avatar="avatar_swords" onclick="window.selectAvatar('avatar_swords', this)">
+                    <img src="img/avatar_swords.png" alt="Espadas">
+                    <div class="selection-ring"></div>
+                </div>
+                <div class="custom-avatar-option" data-avatar="avatar_elf" onclick="window.selectAvatar('avatar_elf', this)">
+                    <img src="img/avatar_elf.png" alt="Elfo">
+                    <div class="selection-ring"></div>
+                </div>
+                <div class="custom-avatar-option" data-avatar="avatar_shield" onclick="window.selectAvatar('avatar_shield', this)">
+                    <img src="img/avatar_shield.png" alt="Escudo">
+                    <div class="selection-ring"></div>
+                </div>
+                <div class="custom-avatar-option" data-avatar="avatar_dragon" onclick="window.selectAvatar('avatar_dragon', this)">
+                    <img src="img/avatar_dragon.png" alt="Dragão">
+                    <div class="selection-ring"></div>
+                </div>
+            </div>
+
+            <div class="custom-section-label" style="margin-top: 5px;">
+                <span>—</span> NOME DO AVENTUREIRO <span>—</span>
+            </div>
+
+            <!-- Input com fundo personalizado -->
+            <div class="custom-input-wrapper">
+                <input type="text" id="new-save-name" placeholder="Ex: Aventureiro" autocomplete="off">
+            </div>
             
-            <div style="display: flex; gap: 10px;">
-                <button onclick="createNewGame()" class="btn-primary" style="flex: 1; padding: 12px;">Criar e Jogar</button>
-                <button onclick="closeModal('modal-new-game')" class="btn-secondary" style="flex: 1; padding: 12px;">Cancelar</button>
+            <!-- Botões com texturas personalizadas -->
+            <div class="custom-modal-buttons">
+                <button onclick="createNewGame()" class="custom-btn-primary">
+                    <span>✦</span> CRIAR E JOGAR <span>✦</span>
+                </button>
+                <button onclick="closeModal('modal-new-game')" class="custom-btn-secondary">
+                    <span>✦</span> CANCELAR <span>✦</span>
+                </button>
             </div>
         </div>
     </div>
@@ -408,7 +442,7 @@
         </div>
     </div>
 
-    <!-- MODAL DA MOCHILA DENTRO DA TORRE ADICIONADO AQUI -->
+    <!-- MODAL DA MOCHILA DENTRO DA TORRE -->
     <div id="modal-battle-inventory" class="modal">
         <div class="modal-content" style="background: #161b22; border: 1px solid #30363d; border-radius: 12px; width: 350px; padding: 20px; color: white;">
             <h3 style="margin-bottom: 15px; color: var(--primary); display: flex; align-items: center; gap: 8px;">🎒 Mochila de Recursos</h3>

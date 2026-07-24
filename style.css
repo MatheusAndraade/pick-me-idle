@@ -526,3 +526,193 @@ button { border: none; cursor: pointer; border-radius: 6px; font-weight: 600; tr
     left: 20px !important;
     z-index: 100 !important;
 }
+
+/* ========================================================== */
+/* ESTILIZAÇÃO CUSTOMIZADA DO MODAL DE CRIAR NOVO JOGO         */
+/* ========================================================== */
+.custom-new-game-modal {
+    background: url('img/modal_bg.png') no-repeat center center;
+    background-size: 100% 100%;
+    width: 580px;
+    max-width: 95vw;
+    padding: 35px 40px 52px 40px; /* Aumentado o padding inferior para descolar os botões da borda */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.custom-modal-title {
+    color: #f3e5ab;
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+    text-align: center;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.custom-modal-subtitle {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.custom-modal-divider {
+    width: 98%;
+    height: auto;
+    margin-bottom: 15px;
+}
+
+.custom-section-label {
+    color: #c29b38;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.custom-section-label span {
+    color: #64748b;
+    font-weight: normal;
+}
+
+.custom-avatar-selector {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.custom-avatar-option {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s;
+}
+
+.custom-avatar-option:hover {
+    transform: scale(1.05);
+}
+
+.custom-avatar-option img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Anel de seleção que aparece apenas quando ativo */
+.custom-avatar-option .selection-ring {
+    position: absolute;
+    inset: -6px;
+    background: url('img/selection_ring.png') no-repeat center center;
+    background-size: 100% 100%;
+    display: none;
+    pointer-events: none;
+}
+
+.custom-avatar-option.active .selection-ring {
+    display: block;
+}
+
+.custom-input-wrapper {
+    background: url('img/input_bg.png') no-repeat center center;
+    background-size: 100% 100%;
+    width: 100%;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    margin-bottom: 25px;
+    box-sizing: border-box;
+}
+
+.custom-input-wrapper input {
+    background: transparent;
+    border: none;
+    outline: none;
+    width: 100%;
+    color: #94a3b8;
+    font-size: 1rem;
+    text-align: center;
+    font-family: inherit;
+}
+
+.custom-input-wrapper input::placeholder {
+    color: #64748b;
+}
+
+.custom-modal-buttons {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+}
+
+.custom-btn-primary {
+    flex: 1;
+    height: 48px;
+    background: url('img/btn_primary.png') no-repeat center center;
+    background-size: 100% 100%;
+    border: none;
+    color: #f3e5ab;
+    font-weight: bold;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: filter 0.2s, transform 0.2s;
+}
+
+.custom-btn-primary span {
+    color: #d97706;
+    font-size: 0.8rem;
+}
+
+.custom-btn-primary:hover {
+    filter: brightness(1.15);
+    transform: translateY(-2px);
+}
+
+.custom-btn-secondary {
+    flex: 1;
+    height: 48px;
+    background: url('img/btn_secondary.png') no-repeat center center;
+    background-size: 100% 100%;
+    border: none;
+    color: #cbd5e1;
+    font-weight: bold;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: filter 0.2s, transform 0.2s;
+}
+
+.custom-btn-secondary span {
+    color: #64748b;
+    font-size: 0.8rem;
+}
+
+.custom-btn-secondary:hover {
+    filter: brightness(1.15);
+    transform: translateY(-2px);
+}

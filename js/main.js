@@ -6,6 +6,14 @@ import { startTowerLevel, fleeBattle, repeatFloor, nextFloor } from './features/
 import { renderMap } from './features/map.js';
 import { initLobbyWalk, stopLobbyWalk, initTowerWalk, stopTowerWalk } from './features/lobby.js';
 
+// Função auxiliar para renderizar o ícone do jogador corretamente (seja emoji ou imagem customizada)
+function getPlayerIconHtml(icon) {
+    if (!icon) icon = 'avatar_wizard';
+    if (icon.startsWith('avatar_')) {
+        return `<img src="img/${icon}.png" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+    }
+    return icon; // Caso seja emoji antigo
+}
 
 export function updateUI() {
     // Atualiza Ouro e Andar Max
@@ -18,7 +26,7 @@ export function updateUI() {
     const welcomeNameEl = document.getElementById('ui-welcome-name');
 
     if (nameEl) nameEl.innerText = game.playerName || 'Aventureiro';
-    if (iconEl) iconEl.innerText = game.playerIcon || '🧙‍♂️';
+    if (iconEl) iconEl.innerHTML = getPlayerIconHtml(game.playerIcon);
     if (welcomeNameEl) welcomeNameEl.innerText = game.playerName || 'Aventureiro';
 
     renderTeam();
@@ -34,23 +42,21 @@ export function updateUI() {
 
 export function selectAvatar(icon, element) {
     setSelectedPlayerIcon(icon);
-    document.querySelectorAll('.avatar-option').forEach(el => {
-        el.style.borderColor = '#334155';
+    // Remove a classe 'active' de todos os avatares customizados para garantir seleção única
+    document.querySelectorAll('.custom-avatar-option').forEach(el => {
         el.classList.remove('active');
     });
-    element.style.borderColor = 'var(--primary)';
+    // Adiciona apenas no elemento clicado
     element.classList.add('active');
 }
 
 export function openNewGameModal() {
     document.getElementById('new-save-name').value = '';
-    setSelectedPlayerIcon('🧙‍♂️');
-    document.querySelectorAll('.avatar-option').forEach((el, index) => {
+    setSelectedPlayerIcon('avatar_wizard');
+    document.querySelectorAll('.custom-avatar-option').forEach((el, index) => {
         if(index === 0) {
-            el.style.borderColor = 'var(--primary)';
             el.classList.add('active');
         } else {
-            el.style.borderColor = '#334155';
             el.classList.remove('active');
         }
     });
@@ -99,11 +105,13 @@ export function openLoadGameModal() {
         saves.forEach(s => {
             let savedData = JSON.parse(localStorage.getItem(s.key) || '{}');
             let pTime = formatPlayTime(savedData.playTime || 0);
-            let icon = s.icon || savedData.playerIcon || '🧙‍♂️';
+            let iconCode = s.icon || savedData.playerIcon || 'avatar_wizard';
+            let iconHtml = iconCode.startsWith('avatar_') ? `<img src="img/${iconCode}.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover;">` : iconCode;
+
             container.innerHTML += `
                 <button onclick="window.loadSpecificSave('${s.key}')" style="display: flex; justify-content: space-between; align-items: center;">
                     <div style="display: flex; align-items: center; gap: 10px;">
-                        <span style="font-size: 1.2rem;">${icon}</span>
+                        <div style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">${iconHtml}</div>
                         <div style="font-weight:bold; font-size:1.1rem; color:var(--primary);">${s.name}</div>
                     </div>
                     <div style="font-size:0.85rem; color:#94a3b8;">⏱️ ${pTime}</div>
@@ -129,7 +137,7 @@ export function loadSpecificSave(key) {
     if(!loadedGame.heroPositions) loadedGame.heroPositions = {};
     if(!loadedGame.towerHeroPositions) loadedGame.towerHeroPositions = {};
     if(!loadedGame.playerName) loadedGame.playerName = key;
-    if(!loadedGame.playerIcon) loadedGame.playerIcon = '🧙‍♂️';
+    if(!loadedGame.playerIcon) loadedGame.playerIcon = 'avatar_wizard';
     if(!loadedGame.playerLevel) loadedGame.playerLevel = 1;
     if(!loadedGame.playerExp) loadedGame.playerExp = 0;
     
@@ -154,11 +162,13 @@ export function openDeleteGameModal() {
         saves.forEach(s => {
             let savedData = JSON.parse(localStorage.getItem(s.key) || '{}');
             let pTime = formatPlayTime(savedData.playTime || 0);
-            let icon = s.icon || savedData.playerIcon || '🧙‍♂️';
+            let iconCode = s.icon || savedData.playerIcon || 'avatar_wizard';
+            let iconHtml = iconCode.startsWith('avatar_') ? `<img src="img/${iconCode}.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover;">` : iconCode;
+
             container.innerHTML += `
                 <button onclick="window.deleteSpecificSave('${s.key}')" style="border-color: var(--danger); display: flex; justify-content: space-between; align-items: center;">
                     <div style="display: flex; align-items: center; gap: 10px;">
-                        <span style="font-size: 1.2rem;">${icon}</span>
+                        <div style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">${iconHtml}</div>
                         <div>
                             <div style="font-weight:bold; font-size:1.1rem; color:var(--danger);">${s.name}</div>
                             <div style="font-size:0.75rem; color:#94a3b8;">Clique para excluir</div>
@@ -209,7 +219,6 @@ export function startMainGameUI() {
     if(!game.heroPositions) game.heroPositions = {};
     if(!game.towerHeroPositions) game.towerHeroPositions = {};
     
-    // Reseta o banner de boas-vindas visível e inicia o fade-out após 5 segundos mantendo o espaço estrutural
     const welcomeBanner = document.getElementById('welcome-banner');
     if (welcomeBanner) {
         welcomeBanner.style.opacity = '1';
