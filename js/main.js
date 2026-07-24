@@ -6,21 +6,18 @@ import { startTowerLevel, fleeBattle, repeatFloor, nextFloor } from './features/
 import { renderMap } from './features/map.js';
 import { initLobbyWalk, stopLobbyWalk, initTowerWalk, stopTowerWalk } from './features/lobby.js';
 
-// Função auxiliar para renderizar o ícone do jogador corretamente (seja emoji ou imagem customizada)
 function getPlayerIconHtml(icon) {
     if (!icon) icon = 'avatar_wizard';
     if (icon.startsWith('avatar_')) {
         return `<img src="img/${icon}.png" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
     }
-    return icon; // Caso seja emoji antigo
+    return icon;
 }
 
 export function updateUI() {
-    // Atualiza Ouro e Andar Max
     document.getElementById('ui-gold').innerText = game.gold;
     document.getElementById('ui-max-floor').innerText = game.maxFloor;
 
-    // Atualiza nome e ícone do perfil do jogador na sidebar
     const nameEl = document.getElementById('ui-player-name');
     const iconEl = document.getElementById('ui-player-icon');
     const welcomeNameEl = document.getElementById('ui-welcome-name');
@@ -42,11 +39,9 @@ export function updateUI() {
 
 export function selectAvatar(icon, element) {
     setSelectedPlayerIcon(icon);
-    // Remove a classe 'active' de todos os avatares customizados para garantir seleção única
     document.querySelectorAll('.custom-avatar-option').forEach(el => {
         el.classList.remove('active');
     });
-    // Adiciona apenas no elemento clicado
     element.classList.add('active');
 }
 
@@ -80,8 +75,8 @@ export function createNewGame() {
         playerExp: 0,
         gold: 0, 
         maxFloor: 1, 
-        heroes: [], // Equipe de batalha inicia vazia
-        village: Array.from({ length: 5 }, () => generateHero(getRandomInt(1, 3))), // 5 heróis iniciais direto no Lobby
+        heroes: [], 
+        village: Array.from({ length: 5 }, () => generateHero(getRandomInt(1, 3))), 
         inventory: { materials: { Minério: 0, Madeira: 0, Couro: 0, Tecido: 0, Cristal: 0, 'Essência de Dragão': 0 }, equips: [] },
         settings: { farmLoop: false },
         playTime: 0, pendingLevelUps: [], sessionStartStats: {}, 
@@ -97,24 +92,30 @@ export function openLoadGameModal() {
     const saves = getSaveList();
     const container = document.getElementById('saves-container');
     container.innerHTML = '';
-    document.getElementById('saves-modal-title').innerText = "Carregar Jogo";
+    document.getElementById('saves-modal-title').innerText = "CARREGAR JOGO";
+    document.querySelector('.custom-load-game-modal .custom-modal-subtitle').innerText = "Selecione um jogo salvo para continuar sua aventura.";
 
     if (saves.length === 0) {
-        container.innerHTML = `<div style="text-align:center; color:#94a3b8; padding:15px;">Nenhum save encontrado. Crie um Novo Jogo!</div>`;
+        container.innerHTML = `<div style="text-align:center; color:#94a3b8; padding:20px;">Nenhum save encontrado. Crie um Novo Jogo!</div>`;
     } else {
         saves.forEach(s => {
             let savedData = JSON.parse(localStorage.getItem(s.key) || '{}');
             let pTime = formatPlayTime(savedData.playTime || 0);
             let iconCode = s.icon || savedData.playerIcon || 'avatar_wizard';
-            let iconHtml = iconCode.startsWith('avatar_') ? `<img src="img/${iconCode}.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover;">` : iconCode;
+            let iconHtml = iconCode.startsWith('avatar_') ? `<img src="img/${iconCode}.png" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover;">` : `<span style="font-size: 1.5rem;">${iconCode}</span>`;
 
+            // Cor alterada para #ffcc44 (amarelo vivo idêntico ao da referência)
             container.innerHTML += `
-                <button onclick="window.loadSpecificSave('${s.key}')" style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">${iconHtml}</div>
-                        <div style="font-weight:bold; font-size:1.1rem; color:var(--primary);">${s.name}</div>
+                <button onclick="window.loadSpecificSave('${s.key}')" class="custom-save-slot">
+                    <div style="display: flex; align-items: center; gap: 16px;">
+                        <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; border: 2px solid #c29b38; overflow: hidden; box-shadow: inset 0 0 8px rgba(0,0,0,0.8);">
+                            ${iconHtml}
+                        </div>
+                        <div style="font-weight: bold; font-size: 1.15rem; color: #ffcc44; text-shadow: 0 2px 4px rgba(0,0,0,0.9);">${s.name}</div>
                     </div>
-                    <div style="font-size:0.85rem; color:#94a3b8;">⏱️ ${pTime}</div>
+                    <div style="font-size: 0.9rem; color: #94a3b8; display: flex; align-items: center; gap: 6px; font-weight: 600;">
+                        <span>⏱️</span> ${pTime}
+                    </div>
                 </button>`;
         });
     }
@@ -154,27 +155,32 @@ export function openDeleteGameModal() {
     const saves = getSaveList();
     const container = document.getElementById('saves-container');
     container.innerHTML = '';
-    document.getElementById('saves-modal-title').innerText = "Deletar Jogo";
+    document.getElementById('saves-modal-title').innerText = "DELETAR JOGO";
+    document.querySelector('.custom-load-game-modal .custom-modal-subtitle').innerText = "Selecione um jogo para ser deletado permanentemente!";
 
     if (saves.length === 0) {
-        container.innerHTML = `<div style="text-align:center; color:#94a3b8; padding:15px;">Nenhum save para deletar.</div>`;
+        container.innerHTML = `<div style="text-align:center; color:#94a3b8; padding:20px;">Nenhum save para deletar.</div>`;
     } else {
         saves.forEach(s => {
             let savedData = JSON.parse(localStorage.getItem(s.key) || '{}');
             let pTime = formatPlayTime(savedData.playTime || 0);
             let iconCode = s.icon || savedData.playerIcon || 'avatar_wizard';
-            let iconHtml = iconCode.startsWith('avatar_') ? `<img src="img/${iconCode}.png" style="width:28px; height:28px; border-radius:50%; object-fit:cover;">` : iconCode;
+            let iconHtml = iconCode.startsWith('avatar_') ? `<img src="img/${iconCode}.png" style="width: 44px; height: 44px; border-radius: 50%; object-fit: cover;">` : `<span style="font-size: 1.5rem;">${iconCode}</span>`;
 
             container.innerHTML += `
-                <button onclick="window.deleteSpecificSave('${s.key}')" style="border-color: var(--danger); display: flex; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <div style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center;">${iconHtml}</div>
-                        <div>
-                            <div style="font-weight:bold; font-size:1.1rem; color:var(--danger);">${s.name}</div>
-                            <div style="font-size:0.75rem; color:#94a3b8;">Clique para excluir</div>
+                <button onclick="window.deleteSpecificSave('${s.key}')" class="custom-save-slot">
+                    <div style="display: flex; align-items: center; gap: 16px;">
+                        <div style="width: 48px; height: 48px; border-radius: 50%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; border: 2px solid var(--danger); overflow: hidden; box-shadow: inset 0 0 8px rgba(0,0,0,0.8);">
+                            ${iconHtml}
+                        </div>
+                        <div style="text-align: left;">
+                            <div style="font-weight: bold; font-size: 1.15rem; color: var(--danger); text-shadow: 0 2px 4px rgba(0,0,0,0.9);">${s.name}</div>
+                            <div style="font-size: 0.75rem; color: #94a3b8;">Clique para excluir</div>
                         </div>
                     </div>
-                    <div style="font-size:0.85rem; color:#94a3b8;">⏱️ ${pTime}</div>
+                    <div style="font-size: 0.9rem; color: #94a3b8; display: flex; align-items: center; gap: 6px; font-weight: 600;">
+                        <span>⏱️</span> ${pTime}
+                    </div>
                 </button>`;
         });
     }

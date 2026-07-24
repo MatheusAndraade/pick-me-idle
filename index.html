@@ -10,7 +10,7 @@
     <div id="notification-area"></div>
     <div id="loot-notification-area"></div>
 
-<!-- Tela Inicial -->
+    <!-- Tela Inicial -->
     <div id="screen-start" class="screen active">
         <div class="start-content">
             <img src="img/logo.png" alt="Pick Me Idle Logo" class="game-logo" style="width: 450px; max-width: 100%; height: auto; margin-bottom: 5px; align-self: center; filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.4));">
@@ -111,7 +111,7 @@
 
         <!-- Conteúdo Principal -->
         <main class="main-content" style="flex: 1; display: flex; flex-direction: column; height: 100vh; overflow: hidden; background: #0f1117;">
-            <!-- Top Bar com Saudação (Fade-out mantendo espaço estrutural) e Botão Melhorado -->
+            <!-- Top Bar com Saudação e Botão Melhorado -->
             <header style="height: 60px; background: #0f1117; border-bottom: 1px solid #1e293b; display: flex; align-items: center; justify-content: space-between; padding: 0 24px;">
                 <div id="welcome-banner" style="display: flex; align-items: center; gap: 8px; color: white; font-size: 0.95rem; font-weight: 500; transition: opacity 1.5s ease, visibility 1.5s ease; opacity: 1; visibility: visible;">
                     <span>👑</span> Bem-vindo de volta, <span id="ui-welcome-name" style="font-weight: bold; color: var(--primary);">Aventureiro</span>!
@@ -127,7 +127,7 @@
             <div style="flex: 1; overflow: hidden; position: relative; display: flex; flex-direction: column; background: #0f1117; padding: 0; margin: 0;">
                 <div style="flex: 1; position: relative; overflow: hidden; display: flex; align-items: stretch; justify-content: stretch; background: #0f1117; padding: 0; margin: 0;">
                     
-                    <!-- Aba Lobby preenchendo 100% da área sem sobras nem vãos -->
+                    <!-- Aba Lobby -->
                     <section id="tab-lobby" class="tab active fullscreen-tab" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #0f1117; padding: 0 !important; margin: 0 !important; border: none !important; border-radius: 0 !important;">
                         <div class="interactive-wrapper" style="width: 100%; height: 100%; position: relative; background: #0f1117; margin: 0 !important; padding: 0 !important; border-radius: 0 !important;">
                             <img src="img/lobby.png" class="interactive-bg-img" alt="Lobby da Cidade" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 0 !important; margin: 0 !important; padding: 0 !important;">
@@ -135,7 +135,7 @@
                         </div>
                     </section>
 
-                    <!-- Aba Equipe preenchendo 100% da área sem sobras nem vãos -->
+                    <!-- Aba Equipe -->
                     <section id="tab-team" class="tab fullscreen-tab" style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; background: #0f1117; padding: 0 !important; margin: 0 !important; border: none !important; border-radius: 0 !important;">
                         <div class="interactive-wrapper" style="width: 100%; height: 100%; position: relative; background: #0f1117; margin: 0 !important; padding: 0 !important; border-radius: 0 !important;">
                             <img src="img/torre.png" class="interactive-bg-img" alt="Torre de Batalha" style="width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 0 !important; margin: 0 !important; padding: 0 !important;">
@@ -274,7 +274,6 @@
                     <span>Loop</span>
                 </label>
 
-                <!-- BOTÃO DA MOCHILA ADICIONADO AQUI -->
                 <button onclick="window.openBattleInventoryModal()" class="btn-secondary" style="padding: 6px 12px; font-size: 0.85rem; background: #1f2937; border: 1px solid #374151; color: white; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
                     🎒 Mochila
                 </button>
@@ -372,7 +371,6 @@
                 <span>—</span> ESCOLHA SEU ÍCONE <span>—</span>
             </div>
 
-            <!-- Seletor de Avatares com as imagens customizadas -->
             <div class="custom-avatar-selector" id="avatar-selector">
                 <div class="custom-avatar-option active" data-avatar="avatar_wizard" onclick="window.selectAvatar('avatar_wizard', this)">
                     <img src="img/avatar_wizard.png" alt="Mago">
@@ -400,12 +398,10 @@
                 <span>—</span> NOME DO AVENTUREIRO <span>—</span>
             </div>
 
-            <!-- Input com fundo personalizado -->
             <div class="custom-input-wrapper">
                 <input type="text" id="new-save-name" placeholder="Ex: Aventureiro" autocomplete="off">
             </div>
             
-            <!-- Botões com texturas personalizadas -->
             <div class="custom-modal-buttons">
                 <button onclick="createNewGame()" class="custom-btn-primary">
                     <span>✦</span> CRIAR E JOGAR <span>✦</span>
@@ -417,11 +413,19 @@
         </div>
     </div>
 
+    <!-- Modal Customizado para Carregar / Deletar Jogo -->
     <div id="modal-saves-list" class="modal">
-        <div class="modal-content">
-            <h3 id="saves-modal-title" style="text-align: center; margin-bottom: 15px;">Selecionar Save</h3>
-            <div id="saves-container" class="modal-list" style="max-height: 250px; overflow-y: auto;"></div>
-            <button onclick="closeModal('modal-saves-list')" class="btn-secondary" style="margin-top: 15px; width: 100%;">Cancelar</button>
+        <div class="custom-load-game-modal">
+            <h3 id="saves-modal-title" class="custom-modal-title">CARREGAR JOGO</h3>
+            <p class="custom-modal-subtitle">Selecione um jogo salvo para continuar sua aventura.</p>
+            
+            <img src="img/divider.png" alt="Divisor" class="custom-modal-divider">
+
+            <div id="saves-container" class="custom-saves-list-container"></div>
+            
+            <button onclick="closeModal('modal-saves-list')" class="custom-load-cancel-btn">
+                <span>✦</span> CANCELAR <span>✦</span>
+            </button>
         </div>
     </div>
 
