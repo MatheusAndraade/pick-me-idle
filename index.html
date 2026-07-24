@@ -10,15 +10,20 @@
     <div id="notification-area"></div>
     <div id="loot-notification-area"></div>
 
-    <!-- Tela Inicial -->
+<!-- Tela Inicial -->
     <div id="screen-start" class="screen active">
         <div class="start-content">
-            <h1 class="game-title">PICK ME IDLE</h1>
-            <p class="game-subtitle">Infinite Gacha</p>
-            <div class="start-menu-buttons">
-                <button onclick="openNewGameModal()" class="btn-start-menu btn-start-yellow">Novo Jogo</button>
-                <button onclick="openLoadGameModal()" class="btn-start-menu btn-start-dark">Carregar Jogo</button>
-                <button onclick="openDeleteGameModal()" class="btn-start-menu btn-start-red">Deletar Jogo</button>
+            <img src="img/logo.png" alt="Pick Me Idle Logo" class="game-logo" style="width: 450px; max-width: 100%; height: auto; margin-bottom: 5px; align-self: center; filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.4));">
+            <div class="start-menu-buttons" style="display: flex; flex-direction: column; gap: 15px; width: 300px; align-items: center;">
+                <button onclick="openNewGameModal()" style="background: transparent; border: none; padding: 0; cursor: pointer; width: 100%; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+                    <img src="img/novo.png" alt="Novo Jogo" style="width: 100%; height: auto; display: block;">
+                </button>
+                <button onclick="openLoadGameModal()" style="background: transparent; border: none; padding: 0; cursor: pointer; width: 100%; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+                    <img src="img/carregar.png" alt="Carregar Jogo" style="width: 100%; height: auto; display: block;">
+                </button>
+                <button onclick="openDeleteGameModal()" style="background: transparent; border: none; padding: 0; cursor: pointer; width: 100%; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.03)'" onmouseout="this.style.transform='scale(1)'">
+                    <img src="img/deletar.png" alt="Deletar Jogo" style="width: 100%; height: auto; display: block;">
+                </button>
             </div>
         </div>
     </div>
